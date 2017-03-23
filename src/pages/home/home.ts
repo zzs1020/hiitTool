@@ -17,6 +17,10 @@ export class HomePage implements OnInit, DoCheck {
   presetPlan: IHiitPlan;
   hiitPlan: HiitPlan;
   planName: string;
+  consumedSecondsInOneSet: number; // used to compare seconds in plan
+  totalSeconds: number; // used to know when to end
+  plannedTotalSeconds: number;
+  plannedSecondsInOneSet: number;
 
   constructor(public navCtrl: NavController) {
   }
@@ -24,6 +28,8 @@ export class HomePage implements OnInit, DoCheck {
   ngOnInit(): void {
     this.minute = 0;
     this.second = 0;
+    this.consumedSecondsInOneSet = 0;
+    this.totalSeconds = 0;
     this.msec = 0;
     this.started = false;
     this.hiitPlan = new HiitPlan();
@@ -37,6 +43,9 @@ export class HomePage implements OnInit, DoCheck {
   toggleTimer(): void {
     this.started = !this.started;
     if (this.started) {
+      // calculate some basic info
+      this.plannedSecondsInOneSet = this.hiitPlan.actionTime * this.hiitPlan.actions;
+      this.plannedTotalSeconds = (this.plannedSecondsInOneSet + this.hiitPlan.restTime) * this.hiitPlan.sets - this.hiitPlan.restTime;
       // start a timer
       this.timing();
     } else {
@@ -54,12 +63,20 @@ export class HomePage implements OnInit, DoCheck {
     this.started = false;
   }
 
+  ender(): void {
+    if (this.totalSeconds >= this.plannedTotalSeconds) {
+      clearInterval(this.simpleInterval);
+    }
+  }
+
   timing(): void {
     this.simpleInterval = setInterval(() => {
       if (this.msec < 99) {
         this.msec++;
       } else {
         this.msec = 0;
+        this.consumedSecondsInOneSet++;
+        this.totalSeconds++;
         if (this.second < 59) {
           this.second++;
         } else {
@@ -67,10 +84,21 @@ export class HomePage implements OnInit, DoCheck {
           this.minute++;
         }
       }
+      this.reminder(); // should remind user to rest/exercise
+      this.ender(); // all sets done, then end
     }, 10);
   }
 
-  //TODO: when go to other tabs, ask user to save changes if current plan changed
+  // TODO: use observable to do this
+  reminder() {
+    if (this.consumedSecondsInOneSet >= this.plannedSecondsInOneSet || this.consumedSecondsInOneSet >= this.hiitPlan.restTime) {
+      this.consumedSecondsInOneSet = 0;
+      // todo ring or change color
+      console.log('next')
+    }
+  }
+
+  // TODO: when go to other tabs, ask user to save changes if current plan changed
   loadPlan(hiitPlan: IHiitPlan) {
     this.hiitPlan.setPlan(hiitPlan);
   }
