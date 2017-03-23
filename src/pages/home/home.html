@@ -7,8 +7,28 @@
 <ion-content padding>
   <h2>TIME</h2>
 
-
   <ion-grid>
+    <ion-row justify-content-center>
+      <ion-col>
+        <ion-item>
+          <ion-label color="primary" floating>Sets of HIIT</ion-label>
+          <ion-input type="number" clearInput></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label color="primary" floating>Duration of a Set</ion-label>
+          <ion-input type="number" clearInput></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label color="primary" floating>Rest Time Between Each Set</ion-label>
+          <ion-input type="number" clearInput></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
     <ion-row justify-content-center>
       <ion-col col-3>{{minute}}</ion-col>
       <ion-col col-1>:</ion-col>
@@ -16,17 +36,17 @@
       <ion-col col-1>:</ion-col>
       <ion-col col-3>{{msec}}</ion-col>
     </ion-row>
-  </ion-grid>
 
-  <div class="row">
-    <div class="col">
-      <button ion-button large full [color]="started ? 'secondary' : 'primary'" (click)="toggleTimer()">
-        {{started ? 'Pause' : 'Start'}}
-      </button>
-    </div>
-    <div class="col">
-      <button ion-button large full color="danger" (click)="resetTimer()">Stop</button>
-    </div>
-  </div>
+    <ion-row>
+      <ion-col>
+        <button ion-button large block [color]="started ? 'secondary' : 'primary'" (click)="toggleTimer()">
+          {{started ? 'Pause' : 'Start'}}
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button large block color="danger" (click)="resetTimer()">Stop</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
