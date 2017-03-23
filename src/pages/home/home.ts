@@ -21,6 +21,7 @@ export class HomePage implements OnInit, DoCheck {
   totalSeconds: number; // used to know when to end
   plannedTotalSeconds: number;
   plannedSecondsInOneSet: number;
+  notifying: string;
 
   constructor(public navCtrl: NavController) {
   }
@@ -45,7 +46,7 @@ export class HomePage implements OnInit, DoCheck {
     if (this.started) {
       // calculate some basic info
       this.plannedSecondsInOneSet = this.hiitPlan.actionTime * this.hiitPlan.actions;
-      this.plannedTotalSeconds = (this.plannedSecondsInOneSet + this.hiitPlan.restTime) * this.hiitPlan.sets - this.hiitPlan.restTime;
+      this.plannedTotalSeconds = (this.plannedSecondsInOneSet + +this.hiitPlan.restTime) * this.hiitPlan.sets - this.hiitPlan.restTime;
       // start a timer
       this.timing();
     } else {
@@ -71,7 +72,8 @@ export class HomePage implements OnInit, DoCheck {
 
   timing(): void {
     this.simpleInterval = setInterval(() => {
-      if (this.msec < 99) {
+      this.notifying = '#ffffff';
+      if (this.msec < 9) {
         this.msec++;
       } else {
         this.msec = 0;
@@ -86,20 +88,27 @@ export class HomePage implements OnInit, DoCheck {
       }
       this.reminder(); // should remind user to rest/exercise
       this.ender(); // all sets done, then end
-    }, 10);
+    }, 100);
+
+    // finally set to white
+    this.notifying = '#ffffff';
   }
 
   // TODO: use observable to do this
-  reminder() {
-    if (this.consumedSecondsInOneSet >= this.plannedSecondsInOneSet || this.consumedSecondsInOneSet >= this.hiitPlan.restTime) {
+  reminder(): void {
+    if (this.consumedSecondsInOneSet > this.plannedSecondsInOneSet || this.consumedSecondsInOneSet > this.hiitPlan.restTime) {
       this.consumedSecondsInOneSet = 0;
       // todo ring or change color
-      console.log('next')
+      this.notifyUser();
     }
   }
 
+  notifyUser(): void {
+    this.notifying = '#ff4055';
+  }
+
   // TODO: when go to other tabs, ask user to save changes if current plan changed
-  loadPlan(hiitPlan: IHiitPlan) {
+  loadPlan(hiitPlan: IHiitPlan): void {
     this.hiitPlan.setPlan(hiitPlan);
   }
 }
