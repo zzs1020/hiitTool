@@ -9,18 +9,20 @@ export class HiitPlan implements IHiitPlan{
   actions: number;
 
   constructor(plan?: IHiitPlan) {
+    this.name = 'Not Set';
+    this.id = '' + Math.floor(Math.random() * 100000);
+
     if (plan) {
-      this.name = plan.name || 'An Unnamed Plan';
+      this.name = plan.name || 'Unnamed Plan';
       this.sets = plan.sets;
       this.restTime = plan.restTime;
       this.actions = plan.actions;
       this.actionTime = plan.actionTime;
     }
-    this.id = '' + Math.floor(Math.random() * 100000);
   }
 
   setPlan(plan: IHiitPlan): void {
-    this.name = plan.name || 'An Unnamed Plan';
+    this.name = plan.name || 'Unnamed Plan';
     this.sets = plan.sets;
     this.restTime = plan.restTime;
     this.actions = plan.actions;
@@ -28,6 +30,7 @@ export class HiitPlan implements IHiitPlan{
   }
 
   clear(): void {
+    this.name = 'Not Set';
     this.sets = null;
     this.restTime = null;
     this.actionTime = null;
@@ -36,5 +39,12 @@ export class HiitPlan implements IHiitPlan{
 
   hasSetProperty(): boolean {
     return Boolean(this.sets || this.restTime || this.actionTime || this.actions);
+  }
+
+  showName(): string {
+    if (this.hasSetProperty() && this.name === 'Not Set') {
+      this.name = 'Unnamed Plan';
+    }
+    return this.name;
   }
 }

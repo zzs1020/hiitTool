@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 import { HiitPlan } from '../../app/entities/hiit-plan.entity';
@@ -8,7 +8,7 @@ import { IHiitPlan } from '../../app/entities/hiit-plan.interface';
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, DoCheck {
   minute: number;
   second: number;
   msec: number;
@@ -16,6 +16,7 @@ export class HomePage implements OnInit {
   simpleInterval: any;
   presetPlan: IHiitPlan;
   hiitPlan: HiitPlan;
+  planName: string;
 
   constructor(public navCtrl: NavController) {
   }
@@ -26,10 +27,11 @@ export class HomePage implements OnInit {
     this.msec = 0;
     this.started = false;
     this.hiitPlan = new HiitPlan();
-    this.presetPlan = {sets: 5, restTime: 90, actionTime: 30, actions: 2};
-    // setInterval(() => {
-    //   this.time = new Date().toISOString();
-    // }, 1000);
+    this.presetPlan = {name: 'Default Plan', sets: 5, restTime: 90, actionTime: 30, actions: 2};
+  }
+
+  ngDoCheck(): void {
+    this.planName = this.hiitPlan.showName();
   }
 
   toggleTimer(): void {
@@ -68,6 +70,7 @@ export class HomePage implements OnInit {
     }, 10);
   }
 
+  //TODO: when go to other tabs, ask user to save changes if current plan changed
   loadPlan(hiitPlan: IHiitPlan) {
     this.hiitPlan.setPlan(hiitPlan);
   }

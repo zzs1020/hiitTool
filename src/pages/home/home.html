@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-  <h2>TIME</h2>
+  <h2>HIIT Plan: {{planName}}</h2>
 
   <ion-grid>
     <ion-row justify-content-center>
@@ -57,7 +57,7 @@
     <ion-row>
       <ion-col>
         <button ion-button large block color="secondary" (click)="hiitPlan.hasSetProperty() ? hiitPlan.clear() : loadPlan(presetPlan)">
-          {{hiitPlan.hasSetProperty() ? 'Clear Plan' : 'Load Pre-Set Plan'}}
+          {{hiitPlan.hasSetProperty() ? 'Unload Plan' : 'Load Pre-Set Plan'}}
         </button>
       </ion-col>
     </ion-row>
