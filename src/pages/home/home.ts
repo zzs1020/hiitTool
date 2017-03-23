@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
+import { HiitPlan } from '../../app/entities/hiit-plan.entity';
+import { IHiitPlan } from '../../app/entities/hiit-plan.interface';
 
 @Component({
   selector: 'page-home',
@@ -12,6 +14,8 @@ export class HomePage implements OnInit {
   msec: number;
   started: boolean;
   simpleInterval: any;
+  presetPlan: IHiitPlan;
+  hiitPlan: HiitPlan;
 
   constructor(public navCtrl: NavController) {
   }
@@ -21,6 +25,8 @@ export class HomePage implements OnInit {
     this.second = 0;
     this.msec = 0;
     this.started = false;
+    this.hiitPlan = new HiitPlan();
+    this.presetPlan = {sets: 5, restTime: 90, actionTime: 30, actions: 2};
     // setInterval(() => {
     //   this.time = new Date().toISOString();
     // }, 1000);
@@ -60,5 +66,9 @@ export class HomePage implements OnInit {
         }
       }
     }, 10);
+  }
+
+  loadPlan(hiitPlan: IHiitPlan) {
+    this.hiitPlan.setPlan(hiitPlan);
   }
 }

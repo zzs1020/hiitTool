@@ -1,7 +1,7 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "hiitTool",
+  "author": "Steve Zheng",
+  "homepage": "https://github.com/SteveZheng-BSFT/hiitTool",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",

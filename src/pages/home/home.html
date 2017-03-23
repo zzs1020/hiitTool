@@ -12,19 +12,25 @@
       <ion-col>
         <ion-item>
           <ion-label color="primary" floating>Sets of HIIT</ion-label>
-          <ion-input type="number" clearInput></ion-input>
+          <ion-input type="number" clearInput [(ngModel)]="hiitPlan.sets"></ion-input>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label color="primary" floating>Duration of a Set</ion-label>
-          <ion-input type="number" clearInput></ion-input>
+          <ion-label color="primary" floating>Break Time</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="hiitPlan.restTime"></ion-input>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label color="primary" floating>Rest Time Between Each Set</ion-label>
-          <ion-input type="number" clearInput></ion-input>
+          <ion-label color="primary" floating>Action's Duration</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="hiitPlan.actionTime"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label color="primary" floating>Total Actions</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="hiitPlan.actions"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -44,7 +50,15 @@
         </button>
       </ion-col>
       <ion-col>
-        <button ion-button large block color="danger" (click)="resetTimer()">Stop</button>
+        <button ion-button large block color="danger" (click)="resetTimer()">Reset</button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <button ion-button large block color="secondary" (click)="hiitPlan.hasSetProperty() ? hiitPlan.clear() : loadPlan(presetPlan)">
+          {{hiitPlan.hasSetProperty() ? 'Clear Plan' : 'Load Pre-Set Plan'}}
+        </button>
       </ion-col>
     </ion-row>
   </ion-grid>
