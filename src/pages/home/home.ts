@@ -66,7 +66,7 @@ export class HomePage implements OnInit, DoCheck {
 
   ender(): void {
     if (this.totalSeconds >= this.plannedTotalSeconds) {
-      clearInterval(this.simpleInterval);
+      this.resetTimer();
     }
   }
 
@@ -89,9 +89,6 @@ export class HomePage implements OnInit, DoCheck {
       this.reminder(); // should remind user to rest/exercise
       this.ender(); // all sets done, then end
     }, 100);
-
-    // finally set to white
-    this.notifying = '#ffffff';
   }
 
   // TODO: use observable to do this
