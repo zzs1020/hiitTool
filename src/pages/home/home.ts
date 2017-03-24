@@ -1,8 +1,9 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { HiitPlan } from '../../app/entities/hiit-plan.entity';
 import { IHiitPlan } from '../../app/entities/hiit-plan.interface';
+import { NativeAudio } from '@ionic-native/native-audio';
 
 @Component({
   selector: 'page-home',
@@ -23,7 +24,11 @@ export class HomePage implements OnInit, DoCheck {
   plannedSecondsInOneSet: number;
   notifying: string;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, private plt: Platform, private nativeAudio: NativeAudio) {
+    plt.ready().then(() => {
+      nativeAudio.preloadSimple('actionEnd', 'assets/audio/isnt-it.m4r');
+      nativeAudio.preloadSimple('restEnd', 'assets/audio/filling-your-inbox.m4r');
+    });
   }
 
   ngOnInit(): void {
@@ -102,6 +107,8 @@ export class HomePage implements OnInit, DoCheck {
 
   notifyUser(): void {
     this.notifying = '#ff4055';
+
+    this.nativeAudio.play('actionEnd');
   }
 
   // TODO: when go to other tabs, ask user to save changes if current plan changed
