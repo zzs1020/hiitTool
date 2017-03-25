@@ -34,8 +34,8 @@ export class HomePage implements OnInit, DoCheck {
   constructor(public navCtrl: NavController, private plt: Platform, private brightness: Brightness,
               private nativeAudio: NativeAudio, private backgroundMode: BackgroundMode, private toast: Toast) {
     plt.ready().then(() => {
-      nativeAudio.preloadSimple('actionStart', 'assets/audio/isnt-it.m4r');
-      nativeAudio.preloadSimple('restStart', 'assets/audio/filling-your-inbox.m4r');
+      nativeAudio.preloadComplex('actionStart', 'assets/audio/isnt-it.m4r', 1, 1, 0).then(()=>console.log('action audio done'), (err)=>console.log('action audio err:'+err));
+      nativeAudio.preloadComplex('restStart', 'assets/audio/filling-your-inbox.m4r', 1, 1, 0).then(()=>console.log('rest audio done'), (err)=>console.log('rest audio err:'+err));
       backgroundMode.enable();
       brightness.setKeepScreenOn(true);
     });
@@ -150,12 +150,12 @@ export class HomePage implements OnInit, DoCheck {
     if (this.currentStatus) {
       this.notifying = '#ffad36';
       this.nextNotification = 'Start Action ' + (this.completedActions + 1);
-      this.toast.show("I'm a toast", '5000', 'bottom');
-      this.nativeAudio.play('actionStart');
+      // this.toast.show("I'm a toast", '5000', 'bottom');
+      this.nativeAudio.play('actionStart').then(()=>console.log('action audio played'), (err)=>console.log('action audio not played:'+err));
     } else {
       this.notifying = '#3fe7ff';
       this.nextNotification = 'Take a ' + this.hiitPlan.restTime + 's Break';
-      this.nativeAudio.play('restStart');
+      this.nativeAudio.play('restStart').then(()=>console.log('rest audio played'), (err)=>console.log('rest audio not played:'+err));
     }
   }
 
