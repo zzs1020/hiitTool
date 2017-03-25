@@ -4,9 +4,9 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding [ngStyle]="{background: notifying}">
+<ion-content padding>
   <h2>HIIT Plan: {{planName}}</h2>
-
+  <ion-item>You will be working for {{plannedTotalSeconds | appSecondTrans}} in total</ion-item>
   <ion-grid>
     <ion-row justify-content-center>
       <ion-col>
@@ -62,5 +62,9 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <p [ngStyle]="{background: notifying}">
+    {{nextNotification}}
+  </p>
 
 </ion-content>

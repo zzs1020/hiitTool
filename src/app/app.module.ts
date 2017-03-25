@@ -9,6 +9,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { SecondTrans } from './pipes/second-trans.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { NativeAudio } from '@ionic-native/native-audio';
     AboutPage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    SecondTrans
   ],
   imports: [
     IonicModule.forRoot(MyApp)

@@ -23,6 +23,7 @@ export class HomePage implements OnInit, DoCheck {
   plannedTotalSeconds: number;
   plannedSecondsInOneSet: number;
   notifying: string;
+  currentStatus: boolean; // true for in exercise, false for in rest
 
   constructor(public navCtrl: NavController, private plt: Platform, private nativeAudio: NativeAudio) {
     plt.ready().then(() => {
@@ -77,7 +78,6 @@ export class HomePage implements OnInit, DoCheck {
 
   timing(): void {
     this.simpleInterval = setInterval(() => {
-      this.notifying = '#ffffff';
       if (this.msec < 9) {
         this.msec++;
       } else {
@@ -98,15 +98,18 @@ export class HomePage implements OnInit, DoCheck {
 
   // TODO: use observable to do this
   reminder(): void {
-    if (this.consumedSecondsInOneSet > this.plannedSecondsInOneSet || this.consumedSecondsInOneSet > this.hiitPlan.restTime) {
+    if (this.consumedSecondsInOneSet > this.plannedSecondsInOneSet) {
       this.consumedSecondsInOneSet = 0;
       // todo ring or change color
       this.notifyUser();
+    } else if (this.consumedSecondsInOneSet > this.hiitPlan.restTime) {
+
     }
   }
 
   notifyUser(): void {
-    this.notifying = '#ff4055';
+    // random background
+    this.notifying = '#ff' + Math.floor(Math.random()*10000);
 
     this.nativeAudio.play('actionEnd');
   }
