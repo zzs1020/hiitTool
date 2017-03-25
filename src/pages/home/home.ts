@@ -18,41 +18,51 @@ export class HomePage implements OnInit, DoCheck {
   presetPlan: IHiitPlan;
   hiitPlan: HiitPlan;
   planName: string;
-  consumedSecondsInOneSet: number; // used to compare seconds in plan
-  totalSeconds: number; // used to know when to end
+  consumedSecondsInOneAction: number; // used to compare seconds in plan
+  completedActions: number;
+  consumedSecondsInRest: number; // used to compare seconds in plan
+  consumedTotalSeconds: number; // used to know when to end
   plannedTotalSeconds: number;
-  plannedSecondsInOneSet: number;
   notifying: string;
   currentStatus: boolean; // true for in exercise, false for in rest
+  nextNotification: string;
+
 
   constructor(public navCtrl: NavController, private plt: Platform, private nativeAudio: NativeAudio) {
     plt.ready().then(() => {
-      nativeAudio.preloadSimple('actionEnd', 'assets/audio/isnt-it.m4r');
-      nativeAudio.preloadSimple('restEnd', 'assets/audio/filling-your-inbox.m4r');
+      nativeAudio.preloadSimple('actionStart', 'assets/audio/isnt-it.m4r');
+      nativeAudio.preloadSimple('restStart', 'assets/audio/filling-your-inbox.m4r');
     });
   }
 
   ngOnInit(): void {
     this.minute = 0;
     this.second = 0;
-    this.consumedSecondsInOneSet = 0;
-    this.totalSeconds = 0;
     this.msec = 0;
     this.started = false;
+    this.consumedSecondsInOneAction = 0;
+    this.completedActions = 0;
+    this.consumedTotalSeconds = 0;
+    this.consumedSecondsInRest = 0;
+    this.completedActions = 0;
+    this.plannedTotalSeconds = 0;
+    this.currentStatus = true;
+
     this.hiitPlan = new HiitPlan();
     this.presetPlan = {name: 'Default Plan', sets: 5, restTime: 90, actionTime: 30, actions: 2};
   }
 
   ngDoCheck(): void {
     this.planName = this.hiitPlan.showName();
+    if (this.hiitPlan.allFieldFilled()) {
+      // calculate some basic info
+      this.plannedTotalSeconds = (this.hiitPlan.actions * this.hiitPlan.actionTime + +this.hiitPlan.restTime) * this.hiitPlan.sets - this.hiitPlan.restTime;
+    }
   }
 
   toggleTimer(): void {
     this.started = !this.started;
     if (this.started) {
-      // calculate some basic info
-      this.plannedSecondsInOneSet = this.hiitPlan.actionTime * this.hiitPlan.actions;
-      this.plannedTotalSeconds = (this.plannedSecondsInOneSet + +this.hiitPlan.restTime) * this.hiitPlan.sets - this.hiitPlan.restTime;
       // start a timer
       this.timing();
     } else {
@@ -68,10 +78,18 @@ export class HomePage implements OnInit, DoCheck {
     this.second = 0;
     this.msec = 0;
     this.started = false;
+    this.consumedSecondsInOneAction = 0;
+    this.completedActions = 0;
+    this.consumedTotalSeconds = 0;
+    this.consumedSecondsInRest = 0;
+    this.completedActions = 0;
+    this.notifying = '#ffffff';
+    this.nextNotification = '';
+    this.currentStatus = true;
   }
 
   ender(): void {
-    if (this.totalSeconds >= this.plannedTotalSeconds) {
+    if (this.consumedTotalSeconds === this.plannedTotalSeconds) {
       this.resetTimer();
     }
   }
@@ -82,8 +100,13 @@ export class HomePage implements OnInit, DoCheck {
         this.msec++;
       } else {
         this.msec = 0;
-        this.consumedSecondsInOneSet++;
-        this.totalSeconds++;
+        this.consumedTotalSeconds++;
+        if (this.currentStatus) {
+          // exercise state
+          this.consumedSecondsInOneAction++;
+        } else {
+          this.consumedSecondsInRest++;
+        }
         if (this.second < 59) {
           this.second++;
         } else {
@@ -98,24 +121,45 @@ export class HomePage implements OnInit, DoCheck {
 
   // TODO: use observable to do this
   reminder(): void {
-    if (this.consumedSecondsInOneSet > this.plannedSecondsInOneSet) {
-      this.consumedSecondsInOneSet = 0;
-      // todo ring or change color
+    // compare exercise time
+    if (this.consumedSecondsInOneAction === this.hiitPlan.actionTime) {
+      this.consumedSecondsInOneAction = 0;
+      this.completedActions++;
+      if (this.completedActions === this.hiitPlan.actions) {
+        this.currentStatus = false;
+        this.completedActions = 0;
+      }
       this.notifyUser();
-    } else if (this.consumedSecondsInOneSet > this.hiitPlan.restTime) {
-
+    }
+    // compare rest time
+    if (this.consumedSecondsInRest === this.hiitPlan.restTime) {
+      this.consumedSecondsInRest = 0;
+      this.currentStatus = true;
+      this.notifyUser();
     }
   }
 
   notifyUser(): void {
-    // random background
-    this.notifying = '#ff' + Math.floor(Math.random()*10000);
-
-    this.nativeAudio.play('actionEnd');
+    // play different audio
+    if (this.currentStatus) {
+      this.notifying = '#ffad36';
+      this.nextNotification = 'Start Action ' + (this.completedActions + 1);
+      this.nativeAudio.play('actionStart');
+    } else {
+      this.notifying = '#3fe7ff';
+      this.nextNotification = 'Take a ' + this.hiitPlan.restTime + 's Break';
+      this.nativeAudio.play('restStart');
+    }
   }
 
   // TODO: when go to other tabs, ask user to save changes if current plan changed
   loadPlan(hiitPlan: IHiitPlan): void {
     this.hiitPlan.setPlan(hiitPlan);
+  }
+
+  unloadPlan(): void {
+    this.resetTimer();
+    this.hiitPlan.clear();
+    this.plannedTotalSeconds = 0;
   }
 }

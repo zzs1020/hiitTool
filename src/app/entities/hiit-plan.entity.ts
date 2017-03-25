@@ -37,12 +37,16 @@ export class HiitPlan implements IHiitPlan{
     this.actions = null;
   }
 
-  hasSetProperty(): boolean {
+  allFieldFilled(): boolean {
+    return Boolean(this.sets && this.restTime && this.actionTime && this.actions);
+  }
+
+  hasFieldFilled(): boolean {
     return Boolean(this.sets || this.restTime || this.actionTime || this.actions);
   }
 
   showName(): string {
-    if (this.hasSetProperty() && this.name === 'Not Set') {
+    if (this.hasFieldFilled() && this.name === 'Not Set') {
       this.name = 'Unnamed Plan';
     }
     return this.name;
