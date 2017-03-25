@@ -6,7 +6,7 @@
 
 <ion-content padding>
   <h2>HIIT Plan: {{planName}}</h2>
-  <ion-item>Duration: {{plannedTotalSeconds | appSecondTrans}}</ion-item>
+  <ion-item>Total Duration: {{plannedTotalSeconds | appSecondTrans}}</ion-item>
   <ion-grid>
     <ion-row justify-content-center>
       <ion-col>
@@ -21,6 +21,9 @@
           <ion-input [disabled]="started" type="number" clearInput [(ngModel)]="hiitPlan.restTime"></ion-input>
         </ion-item>
       </ion-col>
+    </ion-row>
+
+    <ion-row justify-content-center>
       <ion-col>
         <ion-item>
           <ion-label color="primary" floating>Action's Duration</ion-label>
