@@ -2,7 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { PresetPage } from '../pages/preset/preset';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -18,7 +18,7 @@ import { Toast } from '@ionic-native/toast';
   declarations: [
     MyApp,
     AboutPage,
-    ContactPage,
+    PresetPage,
     HomePage,
     TabsPage,
     SecondTrans
@@ -30,7 +30,7 @@ import { Toast } from '@ionic-native/toast';
   entryComponents: [
     MyApp,
     AboutPage,
-    ContactPage,
+    PresetPage,
     HomePage,
     TabsPage
   ],
