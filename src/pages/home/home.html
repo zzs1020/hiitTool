@@ -59,7 +59,8 @@
 
     <ion-row>
       <ion-col>
-        <button [disabled]="started" ion-button large block color="secondary" (click)="hiitPlan.hasFieldFilled() ? unloadPlan() : loadPlan(presetPlan)">
+        <button [disabled]="started" ion-button large block color="secondary"
+                (click)="hiitPlan.hasFieldFilled() ? unloadPlan() : loadPlan(presetPlan)">
           {{hiitPlan.hasFieldFilled() ? 'Unload Plan' : 'Load Pre-Set Plan'}}
         </button>
       </ion-col>

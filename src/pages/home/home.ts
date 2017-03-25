@@ -4,6 +4,9 @@ import { NavController, Platform } from 'ionic-angular';
 import { HiitPlan } from '../../app/entities/hiit-plan.entity';
 import { IHiitPlan } from '../../app/entities/hiit-plan.interface';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { Brightness } from '@ionic-native/brightness';
+import { Toast } from '@ionic-native/toast';
 
 @Component({
   selector: 'page-home',
@@ -28,10 +31,13 @@ export class HomePage implements OnInit, DoCheck {
   nextNotification: string;
 
 
-  constructor(public navCtrl: NavController, private plt: Platform, private nativeAudio: NativeAudio) {
+  constructor(public navCtrl: NavController, private plt: Platform, private brightness: Brightness,
+              private nativeAudio: NativeAudio, private backgroundMode: BackgroundMode, private toast: Toast) {
     plt.ready().then(() => {
       nativeAudio.preloadSimple('actionStart', 'assets/audio/isnt-it.m4r');
       nativeAudio.preloadSimple('restStart', 'assets/audio/filling-your-inbox.m4r');
+      backgroundMode.enable();
+      brightness.setKeepScreenOn(true);
     });
   }
 
@@ -122,17 +128,17 @@ export class HomePage implements OnInit, DoCheck {
   // TODO: use observable to do this
   reminder(): void {
     // compare exercise time
-    if (this.consumedSecondsInOneAction === this.hiitPlan.actionTime) {
+    if (this.consumedSecondsInOneAction === +this.hiitPlan.actionTime) { // input is string
       this.consumedSecondsInOneAction = 0;
       this.completedActions++;
-      if (this.completedActions === this.hiitPlan.actions) {
+      if (this.completedActions === +this.hiitPlan.actions) {
         this.currentStatus = false;
         this.completedActions = 0;
       }
       this.notifyUser();
     }
     // compare rest time
-    if (this.consumedSecondsInRest === this.hiitPlan.restTime) {
+    if (this.consumedSecondsInRest === +this.hiitPlan.restTime) {
       this.consumedSecondsInRest = 0;
       this.currentStatus = true;
       this.notifyUser();
@@ -144,6 +150,7 @@ export class HomePage implements OnInit, DoCheck {
     if (this.currentStatus) {
       this.notifying = '#ffad36';
       this.nextNotification = 'Start Action ' + (this.completedActions + 1);
+      this.toast.show("I'm a toast", '5000', 'bottom');
       this.nativeAudio.play('actionStart');
     } else {
       this.notifying = '#3fe7ff';

@@ -10,6 +10,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { SecondTrans } from './pipes/second-trans.pipe';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { Brightness } from '@ionic-native/brightness';
+import { Toast } from '@ionic-native/toast';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,10 @@ import { SecondTrans } from './pipes/second-trans.pipe';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    NativeAudio
+    NativeAudio,
+    BackgroundMode,
+    Brightness,
+    Toast
   ]
 })
 export class AppModule {}
