@@ -1,12 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { PlanService } from '../services/plan.service';
+import { IHiitPlan } from '../entities/hiit-plan.interface';
 
 @Component({
-    selector: 'app-input-group',
-    templateUrl: 'input-group.component.html'
+  selector: 'app-input-group',
+  templateUrl: 'input-group.component.html'
 })
 export class InputGroupComponent implements OnInit {
-    constructor() { }
+  @Input() started;
+  currentPlan: IHiitPlan;
 
-    ngOnInit() { }
+  constructor(private planService: PlanService) {
+  }
+
+  ngOnInit() {
+    this.currentPlan = this.planService.currentPlan;
+  }
 
 }
