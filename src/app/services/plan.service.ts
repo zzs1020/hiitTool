@@ -6,6 +6,7 @@ import { IHiitPlan } from '../entities/hiit-plan.interface';
 export class PlanService {
   plans: HiitPlan[] = [];
   currentPlan: HiitPlan;
+  tempPlan: IHiitPlan;
 
   constructor() {}
 
@@ -19,4 +20,6 @@ export class PlanService {
     this.currentPlan = new HiitPlan();
     return this.currentPlan;
   }
+
+
 }

@@ -5,6 +5,7 @@ export interface IHiitPlan {
   actions: number;
   readonly id?: string;
   name?: string;
+  description?: string;
   readonly createdOn?: Date;
   updatedOn?: Date;
 }

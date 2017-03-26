@@ -2,6 +2,7 @@ import { IHiitPlan } from './hiit-plan.interface';
 
 export class HiitPlan implements IHiitPlan{
   name?: string;
+  description?: string;
   readonly id: string;
   readonly createdOn: Date;
   updatedOn: Date;
