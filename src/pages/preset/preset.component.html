@@ -7,27 +7,29 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="search-bar-part">
-    <ion-row>
-      <ion-col col-10>
-        <ion-searchbar [(ngModel)]="searchString" [animated]="true" [showCancelButton]="true" placeholder="Search Saved Plan"
-                       (ionInput)="onSearchInput($event)" (ionCancel)="onSearchCancel($event)">
-        </ion-searchbar>
-      </ion-col>
-      <ion-col>
-        <button ion-button block color="primary" (click)="togglePlanEditor()">
-          {{editMode ? 'x' : '+'}}
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="search-bar-part">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-10>
+          <ion-searchbar [(ngModel)]="searchString" [animated]="true" [showCancelButton]="true" placeholder="Search Saved Plan"
+                         (ionInput)="onSearchInput($event)" (ionCancel)="onSearchCancel($event)">
+          </ion-searchbar>
+        </ion-col>
+        <ion-col>
+          <button ion-button block color="primary" (click)="togglePlanEditor()">
+            {{editMode ? 'x' : '+'}}
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
   <app-input-group *ngIf="editMode" [presetMode]="true"></app-input-group>
 
   <ion-list>
     <ion-list-header>Saved Plans</ion-list-header>
-    <ion-item>
-      plan 1
+    <ion-item *ngFor="let plan of plans">
+      {{plan | json}}
     </ion-item>
   </ion-list>
 </ion-content>
