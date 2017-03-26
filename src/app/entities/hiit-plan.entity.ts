@@ -3,6 +3,8 @@ import { IHiitPlan } from './hiit-plan.interface';
 export class HiitPlan implements IHiitPlan{
   name?: string;
   readonly id: string;
+  readonly createdOn: Date;
+  updatedOn: Date;
   sets: number;
   restTime: number;
   actionTime: number;
@@ -11,6 +13,7 @@ export class HiitPlan implements IHiitPlan{
   constructor(plan?: IHiitPlan) {
     this.name = 'Not Set';
     this.id = '' + Math.floor(Math.random() * 100000);
+    this.createdOn = new Date();
 
     if (plan) {
       this.name = plan.name || 'Unnamed Plan';
