@@ -10,6 +10,7 @@ export class InputGroupComponent implements OnInit {
   @Input() started?: boolean;
   @Input() presetMode: boolean;
   currentPlan: IHiitPlan;
+  updateMode: boolean;
 
   constructor(private planService: PlanService) {
   }
@@ -18,4 +19,7 @@ export class InputGroupComponent implements OnInit {
     this.currentPlan = this.presetMode ? this.planService.tempPlan : this.planService.currentPlan;
   }
 
+  savePlan(): void {
+    this.planService.createPlan(this.currentPlan);
+  }
 }

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { PlanService } from '../../app/services/plan.service';
 import { IHiitPlan } from '../../app/entities/hiit-plan.interface';
+import { HiitPlan } from '../../app/entities/hiit-plan.entity';
 
 @Component({
   selector: 'page-preset',
@@ -11,16 +12,15 @@ import { IHiitPlan } from '../../app/entities/hiit-plan.interface';
 export class PresetPage implements OnInit {
   editMode: boolean;
   searchString: string;
+  plans: HiitPlan[];
 
   constructor(public navCtrl: NavController, private planService: PlanService) {
-    this.planService.createPlan({name: 'Default Plan', sets: 5, restTime: 90, actionTime: 30, actions: 2})
-    this.planService.createPlan()
-    console.log(this.planService.plans)
   }
 
   ngOnInit(): void {
     this.editMode = false;
     this.searchString = '';
+    this.plans = this.planService.plans;
   }
 
   togglePlanEditor() {

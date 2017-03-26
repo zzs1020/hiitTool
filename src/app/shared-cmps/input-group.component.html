@@ -37,11 +37,21 @@
     </ion-col>
   </ion-row>
 
-  <ion-row justify-content-center *ngIf="presetMode">
-    <ion-col>
-      <ion-item>
-        <ion-textarea type="text" placeholder="Enter an optional description here..." [(ngModel)]="currentPlan.description"></ion-textarea>
-      </ion-item>
-    </ion-col>
-  </ion-row>
+  <ng-container *ngIf="presetMode">
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-textarea type="text" placeholder="Enter an optional description here..." [(ngModel)]="currentPlan.description"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row justify-content-center>
+      <ion-col>
+        <button ion-button large color="primary" (click)="savePlan()">
+          {{updateMode ? 'Update' : 'Save'}}
+        </button>
+      </ion-col>
+    </ion-row>
+  </ng-container>
 </ion-grid>
