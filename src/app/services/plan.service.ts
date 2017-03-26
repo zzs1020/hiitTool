@@ -5,6 +5,7 @@ import { IHiitPlan } from '../entities/hiit-plan.interface';
 @Injectable()
 export class PlanService {
   plans: HiitPlan[] = [];
+  currentPlan: HiitPlan;
 
   constructor() {}
 
@@ -12,5 +13,10 @@ export class PlanService {
     const plan = new HiitPlan(presetPlan);
     this.plans.push(plan);
     return plan;
+  }
+
+  createCurrentPlan(): HiitPlan {
+    this.currentPlan = new HiitPlan();
+    return this.currentPlan;
   }
 }
