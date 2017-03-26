@@ -4,7 +4,6 @@ export class HiitPlan implements IHiitPlan{
   name?: string;
   description?: string;
   readonly id: string;
-  readonly createdOn: Date;
   updatedOn: Date;
   sets: number;
   restTime: number;
@@ -14,7 +13,7 @@ export class HiitPlan implements IHiitPlan{
   constructor(plan?: IHiitPlan) {
     this.name = 'Not Set';
     this.id = '' + Math.floor(Math.random() * 100000);
-    this.createdOn = new Date();
+    this.updatedOn = new Date();
 
     if (plan) {
       this.name = plan.name || 'Unnamed Plan';
@@ -22,6 +21,7 @@ export class HiitPlan implements IHiitPlan{
       this.restTime = plan.restTime;
       this.actions = plan.actions;
       this.actionTime = plan.actionTime;
+      this.description = plan.description;
     }
   }
 
@@ -31,6 +31,7 @@ export class HiitPlan implements IHiitPlan{
     this.restTime = plan.restTime;
     this.actions = plan.actions;
     this.actionTime = plan.actionTime;
+    this.description = plan.description;
   }
 
   clear(): void {

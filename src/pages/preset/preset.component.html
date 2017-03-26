@@ -29,7 +29,9 @@
   <ion-list>
     <ion-list-header>Saved Plans</ion-list-header>
     <ion-item *ngFor="let plan of plans">
-      {{plan | json}}
+      <p>name: {{plan.name}} (last update: {{plan.updatedOn | date:'H:m:s, M/d/y'}})</p>
+      <p>sets: {{plan.sets}}, rest time: {{plan.restTime}}, action time: {{plan.actionTime}}, actions: {{plan.actions}}</p>
+      <p>description: {{plan.description}}</p>
     </ion-item>
   </ion-list>
 </ion-content>
