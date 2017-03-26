@@ -1,4 +1,12 @@
 <ion-grid>
+  <ion-row justify-content-center *ngIf="presetMode">
+    <ion-col>
+      <ion-item>
+        <ion-input type="text" placeholder="Plan's Name" [(ngModel)]="currentPlan.name"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
   <ion-row justify-content-center>
     <ion-col>
       <ion-item>
@@ -25,6 +33,14 @@
       <ion-item>
         <!--<ion-label color="primary" floating>Total Actions</ion-label>-->
         <ion-input [disabled]="started" type="number" placeholder="Total Actions" [(ngModel)]="currentPlan.actions"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row justify-content-center *ngIf="presetMode">
+    <ion-col>
+      <ion-item>
+        <ion-textarea type="text" placeholder="Enter an optional description here..." [(ngModel)]="currentPlan.description"></ion-textarea>
       </ion-item>
     </ion-col>
   </ion-row>

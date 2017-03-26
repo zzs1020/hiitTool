@@ -7,14 +7,15 @@ import { IHiitPlan } from '../entities/hiit-plan.interface';
   templateUrl: 'input-group.component.html'
 })
 export class InputGroupComponent implements OnInit {
-  @Input() started;
+  @Input() started?: boolean;
+  @Input() presetMode: boolean;
   currentPlan: IHiitPlan;
 
   constructor(private planService: PlanService) {
   }
 
   ngOnInit() {
-    this.currentPlan = this.planService.currentPlan;
+    this.currentPlan = this.presetMode ? this.planService.tempPlan : this.planService.currentPlan;
   }
 
 }
