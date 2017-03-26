@@ -1,3 +1,11 @@
 page-preset {
-
+  .search-bar-part.grid {
+    padding: 0;
+    .col {
+      padding: 0;
+    }
+    .button-ios {
+      margin-top: 0;
+    }
+  }
 }
