@@ -8,7 +8,10 @@ export class PlanService {
   currentPlan: HiitPlan;
   tempPlan: IHiitPlan;
 
-  constructor() {}
+  constructor() {
+    this.createPlan({name: 'Default Plan1', sets: 5, restTime: 90, actionTime: 30, actions: 2});
+    this.createPlan({name: 'Default Plan2', sets: 8, restTime: 90, actionTime: 30, actions: 2});
+  }
 
   createPlan(presetPlan?: IHiitPlan): HiitPlan {
     const plan = new HiitPlan(presetPlan);

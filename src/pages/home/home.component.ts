@@ -31,6 +31,8 @@ export class HomePage implements OnInit, DoCheck {
   currentStatus: boolean; // true for in exercise, false for in rest
   nextNotification: string;
 
+  plans: HiitPlan[];
+
 
   constructor(public navCtrl: NavController, private plt: Platform, private brightness: Brightness,
               private nativeAudio: NativeAudio, private backgroundMode: BackgroundMode, private toast: Toast,
@@ -59,6 +61,8 @@ export class HomePage implements OnInit, DoCheck {
 
     this.currentPlan = this.planService.createCurrentPlan();
     this.presetPlan = {name: 'Default Plan', sets: 5, restTime: 90, actionTime: 30, actions: 2};
+
+    this.plans = this.planService.plans;
   }
 
   ngDoCheck(): void {
