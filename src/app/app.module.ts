@@ -14,7 +14,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { Brightness } from '@ionic-native/brightness';
 import { Toast } from '@ionic-native/toast';
 import { PlanService } from './services/plan.service';
-import { InputGroupComponent } from './shared-cmps/input-group.component';
+import { InputGroupComponent } from './shared-cmps/input-group/input-group.component';
 
 @NgModule({
   declarations: [
