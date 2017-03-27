@@ -71,6 +71,7 @@ export class HomePage implements OnInit, DoCheck {
       // calculate some basic info
       this.plannedTotalSeconds = (this.currentPlan.actions * this.currentPlan.actionTime + +this.currentPlan.restTime) * this.currentPlan.sets - this.currentPlan.restTime;
     }
+    this.planService.currentPlan = this.currentPlan;
   }
 
   toggleTimer(): void {

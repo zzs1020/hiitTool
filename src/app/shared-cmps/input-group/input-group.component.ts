@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core';
 import { PlanService } from '../../services/plan.service';
 import { IHiitPlan } from '../../entities/hiit-plan.interface';
 
@@ -6,7 +6,7 @@ import { IHiitPlan } from '../../entities/hiit-plan.interface';
   selector: 'app-input-group',
   templateUrl: 'input-group.component.html'
 })
-export class InputGroupComponent implements OnInit {
+export class InputGroupComponent implements OnInit, DoCheck {
   @Input() started?: boolean;
   @Input() presetMode: boolean;
   @Output() savedStatus: EventEmitter<boolean>;
@@ -17,7 +17,10 @@ export class InputGroupComponent implements OnInit {
     this.savedStatus = new EventEmitter();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+  }
+
+  ngDoCheck(): void {
     this.currentPlan = this.presetMode ? this.planService.tempPlan : this.planService.currentPlan;
   }
 
