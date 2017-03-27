@@ -12,7 +12,7 @@ export class PlanService {
 
   createPlan(presetPlan?: IHiitPlan): HiitPlan {
     const plan = new HiitPlan(presetPlan);
-    this.plans.push(plan);
+    this.plans.unshift(plan);
     return plan;
   }
 

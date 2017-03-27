@@ -38,4 +38,8 @@ export class PresetPage implements OnInit {
   onSearchCancel(event): void {
 
   }
+
+  removeAllPlans(): void {
+    this.plans = [];
+  }
 }

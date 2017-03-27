@@ -24,7 +24,7 @@
     </ion-grid>
   </div>
 
-  <app-input-group *ngIf="editMode" [presetMode]="true"></app-input-group>
+  <app-input-group *ngIf="editMode" [presetMode]="true" (savedStatus)="togglePlanEditor()"></app-input-group>
 
   <ion-list>
     <ion-list-header>Saved Plans</ion-list-header>
@@ -34,4 +34,6 @@
       <p>description: {{plan.description}}</p>
     </ion-item>
   </ion-list>
+
+  <button *ngIf="plans.length > 0" ion-button large color="primary" (click)="removeAllPlans()">Remove All</button>
 </ion-content>
