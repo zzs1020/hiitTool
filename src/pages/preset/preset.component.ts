@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 import { PlanService } from '../../app/services/plan.service';
-import { IHiitPlan } from '../../app/entities/hiit-plan.interface';
 import { HiitPlan } from '../../app/entities/hiit-plan.entity';
 
 @Component({
@@ -27,7 +26,7 @@ export class PresetPage implements OnInit {
     this.editMode = !this.editMode;
     if (this.editMode) {
       // just give a empty object
-      this.planService.tempPlan = {} as IHiitPlan;
+      this.planService.createCurrentPlan();
     }
   }
 

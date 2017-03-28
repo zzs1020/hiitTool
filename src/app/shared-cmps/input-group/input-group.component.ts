@@ -6,26 +6,18 @@ import { IHiitPlan } from '../../entities/hiit-plan.interface';
   selector: 'app-input-group',
   templateUrl: 'input-group.component.html'
 })
-export class InputGroupComponent implements OnInit, DoCheck {
+export class InputGroupComponent {
   @Input() started?: boolean;
-  @Input() presetMode: boolean;
+  @Input() presetMode?: boolean;
   @Output() savedStatus: EventEmitter<boolean>;
-  currentPlan: IHiitPlan;
   updateMode: boolean;
 
-  constructor(private planService: PlanService) {
+  constructor(public planService: PlanService) {
     this.savedStatus = new EventEmitter();
   }
 
-  ngOnInit(): void {
-  }
-
-  ngDoCheck(): void {
-    this.currentPlan = this.presetMode ? this.planService.tempPlan : this.planService.currentPlan;
-  }
-
   savePlan(): void {
-    this.planService.createPlan(this.currentPlan);
+    this.planService.savePlan();
     // updateMode === false means this is new saved item
     this.savedStatus.emit(this.updateMode);
   }

@@ -5,9 +5,10 @@
 </ion-header>
 
 <ion-content padding>
-  <h2>HIIT Plan: {{planName}}</h2>
-  <h5>Total Duration: {{plannedTotalSeconds | appSecondTrans}}</h5>
   <ion-grid>
+    <h1>{{this.planService.currentPlan.name || 'One-Time Plan'}}</h1>
+    <h5>Total Duration: {{plannedTotalSeconds | appSecondTrans}}</h5>
+
     <app-input-group [started]="started"></app-input-group>
 
     <ion-row justify-content-center class="timer">
@@ -31,15 +32,15 @@
 
     <ion-row>
       <ion-col>
-        <ion-select [disabled]="started" [(ngModel)]="currentPlan" interface="action-sheet" placeholder="Load Preset Plan">
-          <ion-option *ngFor="let plan of plans" [value]="plan">{{plan.name}}</ion-option>
+        <ion-select [disabled]="started" [(ngModel)]="planService.currentPlan" interface="action-sheet" placeholder="Load Preset Plan">
+          <ion-option *ngFor="let plan of planService.plans" [value]="plan">{{plan.name}}</ion-option>
         </ion-select>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col>
-        <button [disabled]="started" *ngIf="currentPlan.hasFieldFilled()" ion-button block color="secondary"
+        <button [disabled]="started" *ngIf="planService.currentPlan.hasFieldFilled()" ion-button block color="secondary"
                 (click)="unloadPlan()">
           Unload Current Plan
         </button>

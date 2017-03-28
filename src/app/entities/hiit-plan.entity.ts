@@ -11,9 +11,7 @@ export class HiitPlan implements IHiitPlan{
   actions: number;
 
   constructor(plan?: IHiitPlan) {
-    this.name = 'Not Set';
     this.id = '' + Math.floor(Math.random() * 100000);
-    this.updatedOn = new Date();
 
     if (plan) {
       this.name = plan.name || 'Unnamed Plan';
@@ -50,10 +48,11 @@ export class HiitPlan implements IHiitPlan{
     return Boolean(this.sets || this.restTime || this.actionTime || this.actions);
   }
 
-  showName(): string {
-    if (this.hasFieldFilled() && this.name === 'Not Set') {
-      this.name = 'Unnamed Plan';
+  // return in seconds
+  totalTime(): number {
+    if (this.allFieldFilled()) {
+      return (this.actions * this.actionTime + +this.restTime) * this.sets - this.restTime;
     }
-    return this.name;
+    return 0;
   }
 }

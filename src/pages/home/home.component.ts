@@ -1,8 +1,6 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 
 import { NavController, Platform } from 'ionic-angular';
-import { HiitPlan } from '../../app/entities/hiit-plan.entity';
-import { IHiitPlan } from '../../app/entities/hiit-plan.interface';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { Brightness } from '@ionic-native/brightness';
@@ -19,9 +17,6 @@ export class HomePage implements OnInit, DoCheck {
   msec: number;
   started: boolean;
   simpleInterval: any;
-  presetPlan: IHiitPlan;
-  currentPlan: HiitPlan;
-  planName: string;
   consumedSecondsInOneAction: number; // used to compare seconds in plan
   completedActions: number;
   consumedSecondsInRest: number; // used to compare seconds in plan
@@ -31,12 +26,9 @@ export class HomePage implements OnInit, DoCheck {
   currentStatus: boolean; // true for in exercise, false for in rest
   nextNotification: string;
 
-  plans: HiitPlan[];
-
-
   constructor(public navCtrl: NavController, private plt: Platform, private brightness: Brightness,
               private nativeAudio: NativeAudio, private backgroundMode: BackgroundMode, private toast: Toast,
-              private planService: PlanService
+              public planService: PlanService
   ) {
     plt.ready().then(() => {
       nativeAudio.preloadComplex('actionStart', 'assets/audio/isnt-it.m4r', 1, 1, 0).then(()=>console.log('action audio done'), (err)=>console.log('action audio err:'+err));
@@ -59,19 +51,12 @@ export class HomePage implements OnInit, DoCheck {
     this.plannedTotalSeconds = 0;
     this.currentStatus = true;
 
-    this.currentPlan = this.planService.createCurrentPlan();
-    this.presetPlan = {name: 'Default Plan', sets: 5, restTime: 90, actionTime: 30, actions: 2};
+    this.planService.createCurrentPlan();
 
-    this.plans = this.planService.plans;
   }
 
   ngDoCheck(): void {
-    this.planName = this.currentPlan.showName();
-    if (this.currentPlan.allFieldFilled()) {
-      // calculate some basic info
-      this.plannedTotalSeconds = (this.currentPlan.actions * this.currentPlan.actionTime + +this.currentPlan.restTime) * this.currentPlan.sets - this.currentPlan.restTime;
-    }
-    this.planService.currentPlan = this.currentPlan;
+    this.plannedTotalSeconds = this.planService.currentPlan.totalTime();
   }
 
   toggleTimer(): void {
@@ -136,17 +121,17 @@ export class HomePage implements OnInit, DoCheck {
   // TODO: use observable to do this
   reminder(): void {
     // compare exercise time
-    if (this.consumedSecondsInOneAction === +this.currentPlan.actionTime) { // input is string
+    if (this.consumedSecondsInOneAction === +this.planService.currentPlan.actionTime) { // input is string
       this.consumedSecondsInOneAction = 0;
       this.completedActions++;
-      if (this.completedActions === +this.currentPlan.actions) {
+      if (this.completedActions === +this.planService.currentPlan.actions) {
         this.currentStatus = false;
         this.completedActions = 0;
       }
       this.notifyUser();
     }
     // compare rest time
-    if (this.consumedSecondsInRest === +this.currentPlan.restTime) {
+    if (this.consumedSecondsInRest === +this.planService.currentPlan.restTime) {
       this.consumedSecondsInRest = 0;
       this.currentStatus = true;
       this.notifyUser();
@@ -162,19 +147,13 @@ export class HomePage implements OnInit, DoCheck {
       this.nativeAudio.play('actionStart').then(()=>console.log('action audio played'), (err)=>console.log('action audio not played:'+err));
     } else {
       this.notifying = '#3fe7ff';
-      this.nextNotification = 'Take a ' + this.currentPlan.restTime + 's Break';
+      this.nextNotification = 'Take a ' + this.planService.currentPlan.restTime + 's Break';
       this.nativeAudio.play('restStart').then(()=>console.log('rest audio played'), (err)=>console.log('rest audio not played:'+err));
     }
   }
 
-  // TODO: when go to other tabs, ask user to save changes if current plan changed
-  loadPlan(hiitPlan: IHiitPlan): void {
-    this.currentPlan.setPlan(hiitPlan);
-  }
-
   unloadPlan(): void {
     this.resetTimer();
-    this.currentPlan.clear();
-    this.plannedTotalSeconds = 0;
+    this.planService.createCurrentPlan(); // create a plan with empty fields
   }
 }
