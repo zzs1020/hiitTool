@@ -17,7 +17,7 @@
         </ion-col>
         <ion-col>
           <button ion-button block color="primary" (click)="togglePlanEditor()">
-            <span class="btn-sign">{{editMode ? 'x' : '+'}}</span>
+            <span class="btn-sign" [ngStyle]="{transform: rotateFunc}">+</span>
           </button>
         </ion-col>
       </ion-row>

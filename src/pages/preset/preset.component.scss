@@ -8,4 +8,11 @@ page-preset {
       margin-top: 0;
     }
   }
+
+  .btn-sign {
+    transition: all 1s;
+    font-size: 2em;
+    display: inline-block;
+    transform-origin: 50% 55%;
+  }
 }

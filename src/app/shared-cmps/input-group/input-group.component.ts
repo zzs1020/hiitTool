@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { PlanService } from '../../services/plan.service';
-import { IHiitPlan } from '../../entities/hiit-plan.interface';
 
 @Component({
   selector: 'app-input-group',

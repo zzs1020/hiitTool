@@ -12,6 +12,8 @@ export class PresetPage implements OnInit {
   editMode: boolean;
   searchString: string;
   plans: HiitPlan[];
+  rotateDegree: number;
+  rotateFunc: string;
 
   constructor(public navCtrl: NavController, private planService: PlanService) {
   }
@@ -20,10 +22,13 @@ export class PresetPage implements OnInit {
     this.editMode = false;
     this.searchString = '';
     this.plans = this.planService.plans;
+    this.rotateDegree = 0;
   }
 
   togglePlanEditor() {
     this.editMode = !this.editMode;
+    this.rotateDegree += 135;
+    this.rotateFunc = 'rotate(' + this.rotateDegree + 'deg)';
     if (this.editMode) {
       // just give a empty object
       this.planService.createCurrentPlan();
