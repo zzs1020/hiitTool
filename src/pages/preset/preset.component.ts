@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { List, NavController } from 'ionic-angular';
 import { PlanService } from '../../app/services/plan.service';
 import { HiitPlan } from '../../app/entities/hiit-plan.entity';
 
@@ -11,27 +11,38 @@ import { HiitPlan } from '../../app/entities/hiit-plan.entity';
 export class PresetPage implements OnInit {
   editMode: boolean;
   searchString: string;
-  plans: HiitPlan[];
   rotateDegree: number;
   rotateFunc: string;
+  @ViewChild(List) list: List
 
-  constructor(public navCtrl: NavController, private planService: PlanService) {
+  constructor(public navCtrl: NavController, public planService: PlanService) {
   }
 
   ngOnInit(): void {
     this.editMode = false;
     this.searchString = '';
-    this.plans = this.planService.plans;
     this.rotateDegree = 0;
   }
 
-  togglePlanEditor() {
-    this.editMode = !this.editMode;
-    this.rotateDegree += 135;
-    this.rotateFunc = 'rotate(' + this.rotateDegree + 'deg)';
-    if (this.editMode) {
-      // just give a empty object
-      this.planService.createCurrentPlan();
+  togglePlanEditor(plan?: HiitPlan) {
+    if (plan) {
+      // if already have a plan in place and try to change to anther plan
+      this.planService.currentPlan = plan;
+      this.list.closeSlidingItems();
+      if (!this.editMode) {
+        this.editMode = true;
+        this.rotateDegree += 135;
+        this.rotateFunc = 'rotate(' + this.rotateDegree + 'deg)';
+      }
+    } else {
+      this.editMode = !this.editMode;
+      this.rotateDegree += 135;
+      this.rotateFunc = 'rotate(' + this.rotateDegree + 'deg)';
+
+      if (this.editMode) {
+        // if try to add a new plan, just give a empty object
+        this.planService.createCurrentPlan();
+      }
     }
   }
 
@@ -43,7 +54,11 @@ export class PresetPage implements OnInit {
 
   }
 
+  deletePlan(plan: HiitPlan) {
+
+  }
+
   removeAllPlans(): void {
-    this.plans = [];
+    this.planService.plans = [];
   }
 }

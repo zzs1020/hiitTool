@@ -20,4 +20,8 @@ export class InputGroupComponent {
     // updateMode === false means this is new saved item
     this.savedStatus.emit(this.updateMode);
   }
+
+  updatePlan() {
+
+  }
 }
