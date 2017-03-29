@@ -29,4 +29,10 @@ export class PlanService {
     return this.currentPlan;
   }
 
+  findPlanIndex(id: string): number {
+    return this.plans.findIndex((plan) => {
+      return plan.id === id;
+    });
+  }
+
 }

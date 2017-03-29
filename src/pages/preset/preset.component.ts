@@ -54,8 +54,8 @@ export class PresetPage implements OnInit {
 
   }
 
-  deletePlan(plan: HiitPlan) {
-
+  deletePlan(id: string) {
+    this.planService.plans.splice(this.planService.findPlanIndex(id), 1);
   }
 
   removeAllPlans(): void {
