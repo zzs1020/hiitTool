@@ -14,7 +14,6 @@ export class PresetPage implements OnInit {
   rotateDegree: number;
   rotateFunc: string;
   @ViewChild(List) list: List;
-  oldPlan: HiitPlan; // used to rollback when user doesn't save
 
   constructor(public navCtrl: NavController, public planService: PlanService) {
   }
@@ -72,8 +71,9 @@ export class PresetPage implements OnInit {
 
   }
 
-  //todo: directly load plan once click
+  // navigate to home and load plan
   loadPlan(plan) {
-
+    this.navCtrl.parent.select(0);
+    this.planService.currentPlan = plan;
   }
 }
