@@ -24,6 +24,7 @@ export class PresetPage implements OnInit {
     this.rotateDegree = 0;
   }
 
+  // todo: should rollback without clicking save
   togglePlanEditor(plan?: HiitPlan) {
     if (plan) {
       // if already have a plan in place and try to change to anther plan
@@ -46,6 +47,7 @@ export class PresetPage implements OnInit {
     }
   }
 
+  //todo: search plan
   onSearchInput(event): void {
 
   }
@@ -60,5 +62,15 @@ export class PresetPage implements OnInit {
 
   removeAllPlans(): void {
     this.planService.plans = [];
+  }
+
+  //todo: show details
+  showDetails() {
+
+  }
+
+  //todo: directly load plan once click
+  loadPlan(plan) {
+
   }
 }

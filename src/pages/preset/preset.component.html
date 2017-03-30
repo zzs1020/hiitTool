@@ -16,7 +16,7 @@
           </ion-searchbar>
         </ion-col>
         <ion-col>
-          <button ion-button block color="primary" (click)="togglePlanEditor()">
+          <button ion-button block [color]="editMode? 'danger' : 'primary'" (click)="togglePlanEditor()">
             <span class="btn-sign" [ngStyle]="{transform: rotateFunc}">+</span>
           </button>
         </ion-col>
@@ -29,14 +29,17 @@
   <ion-list>
     <ion-list-header>Saved Plans</ion-list-header>
     <ion-item-sliding *ngFor="let plan of planService.plans">
-      <ion-item>
+      <ion-item (click)="loadPlan(plan)">
         <p>name: {{plan.name}} (last update: {{plan.updatedOn | date:'H:m:s, M/d/y'}})</p>
         <p>sets: {{plan.sets}}, rest time: {{plan.restTime}}, action time: {{plan.actionTime}}, actions: {{plan.actions}}</p>
         <p>description: {{plan.description}}</p>
       </ion-item>
       <ion-item-options>
+        <button ion-button color="secondary" (click)="showDetails(plan)">
+          <ion-icon name="clipboard"></ion-icon>Details
+        </button>
         <button ion-button (click)="togglePlanEditor(plan)">
-          <ion-icon name="settings"></ion-icon>Update
+          <ion-icon name="create"></ion-icon>Update
         </button>
         <button ion-button color="danger" (click)="deletePlan(plan.id)">
           <ion-icon name="trash"></ion-icon>Delete
@@ -45,5 +48,11 @@
     </ion-item-sliding>
   </ion-list>
 
-  <button *ngIf="planService.plans.length > 0" ion-button color="primary" (click)="removeAllPlans()">Remove All</button>
+  <ion-grid>
+    <ion-row justify-content-end>
+      <ion-col push-8>
+        <button *ngIf="planService.plans.length > 0" ion-button color="light" (click)="removeAllPlans()">Remove All</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
