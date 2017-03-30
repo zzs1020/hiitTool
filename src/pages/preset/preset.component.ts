@@ -14,6 +14,7 @@ export class PresetPage implements OnInit {
   rotateDegree: number;
   rotateFunc: string;
   @ViewChild(List) list: List;
+  oldPlan: HiitPlan; // used to rollback when user doesn't save
 
   constructor(public navCtrl: NavController, public planService: PlanService) {
   }
@@ -24,27 +25,29 @@ export class PresetPage implements OnInit {
     this.rotateDegree = 0;
   }
 
-  // todo: should rollback without clicking save
+  // todo: should close window when navigate out
   togglePlanEditor(plan?: HiitPlan) {
     if (plan) {
       // if already have a plan in place and try to change to anther plan
-      this.planService.currentPlan = plan;
+      this.planService.copyToCurrentPlan(plan);
       this.list.closeSlidingItems();
       if (!this.editMode) {
         this.editMode = true;
-        this.rotateDegree += 135;
-        this.rotateFunc = 'rotate(' + this.rotateDegree + 'deg)';
+        this.rotateAnimation();
       }
     } else {
       this.editMode = !this.editMode;
-      this.rotateDegree += 135;
-      this.rotateFunc = 'rotate(' + this.rotateDegree + 'deg)';
+      this.rotateAnimation();
 
-      if (this.editMode) {
-        // if try to add a new plan, just give a empty object
-        this.planService.createCurrentPlan();
-      }
+      // if try to add a new plan, just give a empty object
+      // if try to close 'input-group' empty current plan
+      this.planService.createCurrentPlan();
     }
+  }
+
+  rotateAnimation(): void {
+    this.rotateDegree += 135;
+    this.rotateFunc = 'rotate(' + this.rotateDegree + 'deg)';
   }
 
   //todo: search plan

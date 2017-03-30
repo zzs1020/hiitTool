@@ -24,18 +24,26 @@ export class PlanService {
     this.currentPlan.updatedOn = new Date();
     this.currentPlan.name = this.currentPlan.name || 'Unnamed Plan';
     // if this plan a new plan or existed
-    const existPlan = this.plans.find((plan) => {
+    const existPlanIndex = this.plans.findIndex((plan) => {
       return plan.id === this.currentPlan.id;
     });
     // new plan add to array
-    if(!existPlan) {
+    if(existPlanIndex === -1) {
       this.plans.unshift(this.currentPlan);
+    } else {
+      // replace this plan
+      this.plans.splice(existPlanIndex, 1, this.currentPlan);
     }
     return this.currentPlan;
   }
 
   createCurrentPlan(): HiitPlan {
     this.currentPlan = new HiitPlan();
+    return this.currentPlan;
+  }
+
+  copyToCurrentPlan(plan: HiitPlan): HiitPlan {
+    this.currentPlan.setWholePlan(plan);
     return this.currentPlan;
   }
 

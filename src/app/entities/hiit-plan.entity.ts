@@ -3,7 +3,7 @@ import { IHiitPlan } from './hiit-plan.interface';
 export class HiitPlan implements IHiitPlan{
   name?: string;
   description?: string;
-  readonly id: string;
+  id: string;
   updatedOn: Date;
   sets: number;
   restTime: number;
@@ -23,13 +23,30 @@ export class HiitPlan implements IHiitPlan{
     }
   }
 
-  setPlan(plan: IHiitPlan): void {
+  setRawPlan(plan: IHiitPlan): void {
     this.name = plan.name || 'Unnamed Plan';
     this.sets = plan.sets;
     this.restTime = plan.restTime;
     this.actions = plan.actions;
     this.actionTime = plan.actionTime;
     this.description = plan.description;
+  }
+
+  setWholePlan(plan: HiitPlan): void {
+    this.id = plan.id;
+    this.updatedOn = plan.updatedOn;
+    this.setRawPlan(plan);
+  }
+
+  getPlan(): IHiitPlan {
+    return {
+      name: this.name,
+      sets: this.sets,
+      restTime: this.restTime,
+      actions: this.actions,
+      actionTime: this.actionTime,
+      description: this.description
+    };
   }
 
   clear(): void {
