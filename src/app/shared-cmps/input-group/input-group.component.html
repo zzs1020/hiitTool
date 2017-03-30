@@ -48,7 +48,7 @@
 
     <ion-row justify-content-center>
       <ion-col>
-        <button ion-button large color="primary" (click)="savePlan()">
+        <button [disabled]="!planService.currentPlan.allFieldFilled()" ion-button large color="primary" (click)="savePlan()">
           Save
         </button>
       </ion-col>

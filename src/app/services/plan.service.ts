@@ -22,6 +22,7 @@ export class PlanService {
   // add a new plan or update an existed plan
   savePlan(): HiitPlan {
     this.currentPlan.updatedOn = new Date();
+    this.currentPlan.name = this.currentPlan.name || 'Unnamed Plan';
     // if this plan a new plan or existed
     const existPlan = this.plans.find((plan) => {
       return plan.id === this.currentPlan.id;
