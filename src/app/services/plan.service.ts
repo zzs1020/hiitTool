@@ -14,13 +14,22 @@ export class PlanService {
 
   createPlanAndSave(presetPlan?: IHiitPlan): HiitPlan {
     const plan = new HiitPlan(presetPlan);
+    plan.updatedOn = new Date();
     this.plans.unshift(plan);
     return plan;
   }
 
+  // add a new plan or update an existed plan
   savePlan(): HiitPlan {
     this.currentPlan.updatedOn = new Date();
-    this.plans.unshift(this.currentPlan);
+    // if this plan a new plan or existed
+    const existPlan = this.plans.find((plan) => {
+      return plan.id === this.currentPlan.id;
+    });
+    // new plan add to array
+    if(!existPlan) {
+      this.plans.unshift(this.currentPlan);
+    }
     return this.currentPlan;
   }
 

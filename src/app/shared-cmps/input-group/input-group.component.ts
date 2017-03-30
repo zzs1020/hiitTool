@@ -9,7 +9,6 @@ export class InputGroupComponent {
   @Input() started?: boolean;
   @Input() presetMode?: boolean;
   @Output() savedStatus: EventEmitter<boolean>;
-  updateMode: boolean;
 
   constructor(public planService: PlanService) {
     this.savedStatus = new EventEmitter();
@@ -17,11 +16,7 @@ export class InputGroupComponent {
 
   savePlan(): void {
     this.planService.savePlan();
-    // updateMode === false means this is new saved item
-    this.savedStatus.emit(this.updateMode);
-  }
-
-  updatePlan() {
-
+    // true means nothing, just a flag to tell upper to close window
+    this.savedStatus.emit(true);
   }
 }

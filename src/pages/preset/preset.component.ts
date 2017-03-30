@@ -13,7 +13,7 @@ export class PresetPage implements OnInit {
   searchString: string;
   rotateDegree: number;
   rotateFunc: string;
-  @ViewChild(List) list: List
+  @ViewChild(List) list: List;
 
   constructor(public navCtrl: NavController, public planService: PlanService) {
   }
