@@ -1,41 +1,59 @@
 import { Injectable } from '@angular/core';
 import { HiitPlan } from '../entities/hiit-plan.entity';
 import { IHiitPlan } from '../entities/hiit-plan.interface';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class PlanService {
   plans: HiitPlan[] = [];
   currentPlan: HiitPlan;
 
-  constructor() {
-    this.createPlanAndSave({name: 'Default Plan1', sets: 5, restTime: 90, actionTime: 30, actions: 2});
-    this.createPlanAndSave({name: 'Default Plan2', sets: 8, restTime: 90, actionTime: 30, actions: 2});
+  constructor(private storage: Storage) {
+    storage.ready().then(() => {
+
+      // todo: there's no easy way to know if both 2 following finished before get all plans because it's promise, should introduce observable
+      // this.createPlanAndSave({id: 'defaultId1', name: 'Default Plan1', sets: 5, restTime: 90, actionTime: 30, actions: 2});
+      // this.createPlanAndSave({id: 'defaultId2', name: 'Default Plan2', sets: 8, restTime: 90, actionTime: 30, actions: 2});
+
+      // get all plans
+      this.plans = [];
+      storage.forEach((plan) => {
+        this.plans.push(plan);
+      });
+    });
+
   }
 
-  createPlanAndSave(presetPlan?: IHiitPlan): HiitPlan {
+  // just used for making my default plans
+  private createPlanAndSave(presetPlan?: IHiitPlan): Promise<HiitPlan> {
     const plan = new HiitPlan(presetPlan);
     plan.updatedOn = new Date();
-    this.plans.unshift(plan);
-    return plan;
+    return this.save(plan);
   }
 
-  // todo: add DB
-  // add a new plan or update an existed plan
-  savePlan(): HiitPlan {
-    this.currentPlan.updatedOn = new Date();
-    this.currentPlan.name = this.currentPlan.name || 'Unnamed Plan';
+  // add/update to local this.plans
+  saveToLocal(plan: HiitPlan): void {
     // if this plan a new plan or existed
-    const existPlanIndex = this.plans.findIndex((plan) => {
-      return plan.id === this.currentPlan.id;
+    const existPlanIndex = this.plans.findIndex((existedPlan) => {
+      return existedPlan.id === plan.id;
     });
     // new plan add to array
     if(existPlanIndex === -1) {
-      this.plans.unshift(this.currentPlan);
+      this.plans.unshift(plan);
     } else {
       // replace this plan
-      this.plans.splice(existPlanIndex, 1, this.currentPlan);
+      this.plans.splice(existPlanIndex, 1, plan);
     }
-    return this.currentPlan;
+  }
+
+  // save to db and then add to service.plans
+  save(plan?: HiitPlan): Promise<any> {
+    plan = plan || this.currentPlan;
+    plan.updatedOn = new Date();
+    plan.name = plan.name || 'Unnamed Plan';
+    return this.storage.set(plan.id, plan).then((savedPlan) => {
+      this.saveToLocal(savedPlan);
+    });
   }
 
   createCurrentPlan(): HiitPlan {

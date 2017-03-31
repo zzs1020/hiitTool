@@ -16,7 +16,7 @@ export class InputGroupComponent {
   }
 
   savePlan(): void {
-    this.planService.savePlan();
+    this.planService.save();
     // true means nothing, just a flag to tell upper to close window
     this.savedStatus.emit(true);
   }

@@ -11,19 +11,15 @@ export class HiitPlan implements IHiitPlan{
   actions: number;
 
   constructor(plan?: IHiitPlan) {
-    this.id = '' + Math.floor(Math.random() * 100000);
+    this.id = '' + Math.floor(Math.random() * 1000000000000000000);
 
     if (plan) {
-      this.name = plan.name || 'Unnamed Plan';
-      this.sets = plan.sets;
-      this.restTime = plan.restTime;
-      this.actions = plan.actions;
-      this.actionTime = plan.actionTime;
-      this.description = plan.description;
+      this.setRawPlan(plan);
     }
   }
 
   setRawPlan(plan: IHiitPlan): void {
+    this.id = plan.id || this.id;
     this.name = plan.name || 'Unnamed Plan';
     this.sets = plan.sets;
     this.restTime = plan.restTime;

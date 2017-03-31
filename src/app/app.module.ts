@@ -16,6 +16,7 @@ import { Toast } from '@ionic-native/toast';
 import { PlanService } from './services/plan.service';
 import { InputGroupComponent } from './shared-cmps/input-group/input-group.component';
 import { DatePipe } from '@angular/common';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { DatePipe } from '@angular/common';
     InputGroupComponent
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
