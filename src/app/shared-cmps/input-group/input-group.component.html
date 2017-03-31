@@ -1,0 +1,57 @@
+<ion-grid>
+  <ion-row justify-content-center *ngIf="presetMode">
+    <ion-col>
+      <ion-item>
+        <ion-input type="text" placeholder="Plan's Name" [(ngModel)]="planService.currentPlan.name"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row justify-content-center>
+    <ion-col>
+      <ion-item>
+        <!--<ion-label color="primary" floating>Sets of HIIT</ion-label>-->
+        <ion-input [disabled]="started" type="number" placeholder="Sets of HIIT" [(ngModel)]="planService.currentPlan.sets"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <!--<ion-label color="primary" floating>Break Time</ion-label>-->
+        <ion-input [disabled]="started" type="number" placeholder="Break Time" [(ngModel)]="planService.currentPlan.restTime"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row justify-content-center>
+    <ion-col>
+      <ion-item>
+        <!--<ion-label color="primary" floating>Action's Duration</ion-label>-->
+        <ion-input [disabled]="started" type="number" placeholder="Action's Duration" clearInput [(ngModel)]="planService.currentPlan.actionTime"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <!--<ion-label color="primary" floating>Total Actions</ion-label>-->
+        <ion-input [disabled]="started" type="number" placeholder="Total Actions" [(ngModel)]="planService.currentPlan.actions"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ng-container *ngIf="presetMode">
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-textarea type="text" placeholder="Enter an optional description here..." [(ngModel)]="planService.currentPlan.description"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row justify-content-center>
+      <ion-col>
+        <button [disabled]="!planService.currentPlan.allFieldFilled()" ion-button large color="primary" (click)="savePlan()">
+          Save
+        </button>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+</ion-grid>

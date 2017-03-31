@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>HIIT Timer</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <h1>{{this.planService.currentPlan.name || 'One-Time Plan'}}</h1>
+    <h5>Total Duration: {{plannedTotalSeconds | appSecondTrans}}</h5>
+
+    <app-input-group [started]="started"></app-input-group>
+
+    <ion-row justify-content-center class="timer">
+      <ion-col col-3>{{minute}}</ion-col>
+      <ion-col col-1>:</ion-col>
+      <ion-col col-3>{{second}}</ion-col>
+      <ion-col col-1>:</ion-col>
+      <ion-col col-3>{{msec}}</ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <button ion-button large block [color]="started ? 'secondary' : 'primary'" (click)="toggleTimer()">
+          {{started ? 'Pause' : 'Start'}}
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button large block color="danger" (click)="resetTimer()">Reset</button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-select [disabled]="started" [(ngModel)]="planService.currentPlan" interface="action-sheet" placeholder="Load Preset Plan">
+          <ion-option *ngFor="let plan of planService.plans" [value]="plan">{{plan.name}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <button [disabled]="started" *ngIf="planService.currentPlan.hasFieldFilled()" ion-button block color="secondary"
+                (click)="unloadPlan()">
+          Unload Current Plan
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <p [ngStyle]="{background: notifying}">
+    {{nextNotification}}
+  </p>
+
+</ion-content>

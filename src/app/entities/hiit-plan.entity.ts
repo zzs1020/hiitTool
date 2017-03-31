@@ -2,14 +2,15 @@ import { IHiitPlan } from './hiit-plan.interface';
 
 export class HiitPlan implements IHiitPlan{
   name?: string;
-  readonly id: string;
+  description?: string;
+  id: string;
+  updatedOn: Date;
   sets: number;
   restTime: number;
   actionTime: number;
   actions: number;
 
   constructor(plan?: IHiitPlan) {
-    this.name = 'Not Set';
     this.id = '' + Math.floor(Math.random() * 100000);
 
     if (plan) {
@@ -18,15 +19,34 @@ export class HiitPlan implements IHiitPlan{
       this.restTime = plan.restTime;
       this.actions = plan.actions;
       this.actionTime = plan.actionTime;
+      this.description = plan.description;
     }
   }
 
-  setPlan(plan: IHiitPlan): void {
+  setRawPlan(plan: IHiitPlan): void {
     this.name = plan.name || 'Unnamed Plan';
     this.sets = plan.sets;
     this.restTime = plan.restTime;
     this.actions = plan.actions;
     this.actionTime = plan.actionTime;
+    this.description = plan.description;
+  }
+
+  setWholePlan(plan: HiitPlan): void {
+    this.id = plan.id;
+    this.updatedOn = plan.updatedOn;
+    this.setRawPlan(plan);
+  }
+
+  getPlan(): IHiitPlan {
+    return {
+      name: this.name,
+      sets: this.sets,
+      restTime: this.restTime,
+      actions: this.actions,
+      actionTime: this.actionTime,
+      description: this.description
+    };
   }
 
   clear(): void {
@@ -37,14 +57,19 @@ export class HiitPlan implements IHiitPlan{
     this.actions = null;
   }
 
-  hasSetProperty(): boolean {
+  allFieldFilled(): boolean {
+    return Boolean(this.sets && this.restTime && this.actionTime && this.actions);
+  }
+
+  hasFieldFilled(): boolean {
     return Boolean(this.sets || this.restTime || this.actionTime || this.actions);
   }
 
-  showName(): string {
-    if (this.hasSetProperty() && this.name === 'Not Set') {
-      this.name = 'Unnamed Plan';
+  // return in seconds
+  totalTime(): number {
+    if (this.allFieldFilled()) {
+      return (this.actions * this.actionTime + +this.restTime) * this.sets - this.restTime;
     }
-    return this.name;
+    return 0;
   }
 }
