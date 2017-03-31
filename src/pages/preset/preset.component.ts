@@ -5,6 +5,7 @@ import { PlanService } from '../../app/services/plan.service';
 import { HiitPlan } from '../../app/entities/hiit-plan.entity';
 import { DatePipe } from '@angular/common';
 
+// todo: add animations close/open input-group
 @Component({
   selector: 'page-preset',
   templateUrl: 'preset.component.html'
@@ -52,10 +53,6 @@ export class PresetPage implements OnInit {
 
   //todo: search plan
   onSearchInput(event): void {
-
-  }
-
-  onSearchCancel(event): void {
 
   }
 

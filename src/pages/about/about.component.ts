@@ -8,6 +8,9 @@ import { NavController } from 'ionic-angular';
 })
 export class AboutPage {
 
+  // todo: add README
+  // todo: add Q&A
+  // todo: add animate tutorial
   constructor(public navCtrl: NavController) {
 
   }

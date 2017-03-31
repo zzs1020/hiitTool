@@ -19,6 +19,7 @@ export class PlanService {
     return plan;
   }
 
+  // todo: add DB
   // add a new plan or update an existed plan
   savePlan(): HiitPlan {
     this.currentPlan.updatedOn = new Date();

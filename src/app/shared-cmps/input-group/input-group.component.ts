@@ -10,6 +10,7 @@ export class InputGroupComponent {
   @Input() presetMode?: boolean;
   @Output() savedStatus: EventEmitter<boolean>;
 
+  //todo: bug: app shakes when input
   constructor(public planService: PlanService) {
     this.savedStatus = new EventEmitter();
   }
