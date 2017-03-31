@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { List, NavController } from 'ionic-angular';
+import { AlertController, List, NavController } from 'ionic-angular';
 import { PlanService } from '../../app/services/plan.service';
 import { HiitPlan } from '../../app/entities/hiit-plan.entity';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'page-preset',
@@ -15,7 +16,8 @@ export class PresetPage implements OnInit {
   rotateFunc: string;
   @ViewChild(List) list: List;
 
-  constructor(public navCtrl: NavController, public planService: PlanService) {
+  constructor(public navCtrl: NavController, public planService: PlanService,
+              private alertCtrl: AlertController, private datePipe: DatePipe) {
   }
 
   ngOnInit(): void {
@@ -24,8 +26,7 @@ export class PresetPage implements OnInit {
     this.rotateDegree = 0;
   }
 
-  // todo: should close window when navigate out
-  togglePlanEditor(plan?: HiitPlan) {
+  togglePlanEditor(plan?: HiitPlan): void {
     if (plan) {
       // if already have a plan in place and try to change to anther plan
       this.planService.copyToCurrentPlan(plan);
@@ -67,8 +68,24 @@ export class PresetPage implements OnInit {
   }
 
   //todo: show details
-  showDetails() {
+  showDetails(plan: HiitPlan) {
+    let message = 'Sets: ' + plan.sets + ', Rest Time: ' + plan.restTime + 's<br>actions: ' + plan.actions +
+                  ', Action Time ' + plan.actionTime + 's<br>Description: ' + (plan.description || '');
 
+    this.alertCtrl.create({
+      title: plan.name,
+      subTitle: 'Last update: ' + this.datePipe.transform(plan.updatedOn, 'MM/dd/y, H:mm:ss'),
+      message,
+      buttons: [
+        'Dismiss',
+        {
+          text: 'Load Plan',
+          handler: () => this.loadPlan(plan)
+        }
+      ]
+    }).present();
+
+    this.list.closeSlidingItems();
   }
 
   // navigate to home and load plan

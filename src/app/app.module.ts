@@ -15,6 +15,7 @@ import { Brightness } from '@ionic-native/brightness';
 import { Toast } from '@ionic-native/toast';
 import { PlanService } from './services/plan.service';
 import { InputGroupComponent } from './shared-cmps/input-group/input-group.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { InputGroupComponent } from './shared-cmps/input-group/input-group.compo
     BackgroundMode,
     Brightness,
     Toast,
-    PlanService
+    PlanService,
+    DatePipe
   ]
 })
 export class AppModule {}

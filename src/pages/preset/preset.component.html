@@ -30,9 +30,8 @@
     <ion-list-header>Saved Plans</ion-list-header>
     <ion-item-sliding *ngFor="let plan of planService.plans">
       <ion-item (click)="loadPlan(plan)">
-        <p>name: {{plan.name}} (last update: {{plan.updatedOn | date:'H:m:s, M/d/y'}})</p>
+        <p>name: {{plan.name}}</p>
         <p>sets: {{plan.sets}}, rest time: {{plan.restTime}}, action time: {{plan.actionTime}}, actions: {{plan.actions}}</p>
-        <p>description: {{plan.description}}</p>
       </ion-item>
       <ion-item-options>
         <button ion-button color="secondary" (click)="showDetails(plan)">
