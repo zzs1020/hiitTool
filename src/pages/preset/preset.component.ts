@@ -67,7 +67,6 @@ export class PresetPage implements OnInit {
     this.planService.plans = [];
   }
 
-  //todo: show details
   showDetails(plan: HiitPlan) {
     let message = 'Sets: ' + plan.sets + ', Rest Time: ' + plan.restTime + 's<br>actions: ' + plan.actions +
                   ', Action Time ' + plan.actionTime + 's<br>Description: ' + (plan.description || '');
