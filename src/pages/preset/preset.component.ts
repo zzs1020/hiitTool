@@ -23,7 +23,7 @@ export class PresetPage implements OnInit {
 
   ngOnInit(): void {
     this.editMode = false;
-    this.searchString = '';
+    this.searchString = ''; // if don't set '', search bar will show undefined
     this.rotateDegree = 0;
   }
 
@@ -47,11 +47,6 @@ export class PresetPage implements OnInit {
   rotateAnimation(): void {
     this.rotateDegree += 135;
     this.rotateFunc = 'rotate(' + this.rotateDegree + 'deg)';
-  }
-
-  //todo: search plan
-  onSearchInput(event): void {
-
   }
 
   remove(id: string) {

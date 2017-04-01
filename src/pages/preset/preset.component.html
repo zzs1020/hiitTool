@@ -11,8 +11,8 @@
     <ion-grid>
       <ion-row>
         <ion-col col-10>
-          <ion-searchbar [(ngModel)]="searchString" [animated]="true" [showCancelButton]="true" placeholder="Search Saved Plan"
-                         (ionInput)="onSearchInput($event)">
+          <ion-searchbar [(ngModel)]="searchString" [animated]="true"
+                         [showCancelButton]="true" placeholder="Search plan by name...">
           </ion-searchbar>
         </ion-col>
         <ion-col>
@@ -28,7 +28,7 @@
 
   <ion-list>
     <ion-list-header>Saved Plans</ion-list-header>
-    <ion-item-sliding *ngFor="let plan of planService.plans">
+    <ion-item-sliding *ngFor="let plan of (planService.plans | appPlanFilter:searchString)">
       <ion-item (click)="loadPlan(plan)">
         <p>name: {{plan.name}}</p>
         <p>sets: {{plan.sets}}, rest time: {{plan.restTime}}, action time: {{plan.actionTime}}, actions: {{plan.actions}}</p>
