@@ -23,27 +23,25 @@ export class PresetPage implements OnInit {
 
   ngOnInit(): void {
     this.editMode = false;
-    this.searchString = '';
+    this.searchString = ''; // if don't set '', search bar will show undefined
     this.rotateDegree = 0;
   }
 
   togglePlanEditor(plan?: HiitPlan): void {
     if (plan) {
-      // if already have a plan in place and try to change to anther plan
-      this.planService.copyToCurrentPlan(plan);
-      this.list.closeSlidingItems();
       if (!this.editMode) {
         this.editMode = true;
         this.rotateAnimation();
       }
+      this.list.closeSlidingItems();
     } else {
       this.editMode = !this.editMode;
       this.rotateAnimation();
-
-      // if try to add a new plan, just give a empty object
-      // if try to close 'input-group' empty current plan
-      this.planService.createCurrentPlan();
     }
+    // if try to update a plan
+    // if try to add a new plan, just give a empty object
+    // if try to close 'input-group' empty current plan
+    this.planService.createCurrentPlan(plan);
   }
 
   rotateAnimation(): void {
@@ -51,17 +49,22 @@ export class PresetPage implements OnInit {
     this.rotateFunc = 'rotate(' + this.rotateDegree + 'deg)';
   }
 
-  //todo: search plan
-  onSearchInput(event): void {
-
-  }
-
-  deletePlan(id: string) {
-    this.planService.plans.splice(this.planService.findPlanIndex(id), 1);
+  remove(id: string) {
+    this.planService.remove(id);
   }
 
   removeAllPlans(): void {
-    this.planService.plans = [];
+    this.alertCtrl.create({
+      title: 'Are You Sure?',
+      subTitle: 'Lost Data are Nonrecoverable',
+      buttons: [
+        'Dismiss',
+        {
+          text: 'Remove',
+          handler: () => this.planService.removeAll()
+        }
+      ]
+    }).present();
   }
 
   showDetails(plan: HiitPlan) {
