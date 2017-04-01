@@ -57,12 +57,17 @@ export class PlanService {
   remove(id: string): Promise<HiitPlan> {
     return this.storage.remove(id).then(() => {
       this.plans.splice(this.findPlanIndex(id), 1);
+      // if already load this plan
+      if (this.currentPlan.id === id) {
+        this.createCurrentPlan();
+      }
     });
   }
 
   removeAll(): Promise<HiitPlan> {
     return this.storage.clear().then(() => {
       this.plans = [];
+      this.createCurrentPlan();
     });
   }
 
