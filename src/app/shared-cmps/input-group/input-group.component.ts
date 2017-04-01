@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { PlanService } from '../../services/plan.service';
 import { Keyboard } from '@ionic-native/keyboard';
+import { Platform } from 'ionic-angular';
 
 @Component({
   selector: 'app-input-group',
@@ -11,9 +12,11 @@ export class InputGroupComponent {
   @Input() presetMode?: boolean;
   @Output() savedStatus: EventEmitter<boolean>;
 
-  constructor(public planService: PlanService, private keyboard: Keyboard) {
+  constructor(public planService: PlanService, private platform: Platform, private keyboard: Keyboard) {
     this.savedStatus = new EventEmitter();
-    keyboard.disableScroll(true);
+    platform.ready().then(() => {
+      keyboard.disableScroll(true);
+    });
   }
 
   savePlan(): void {
