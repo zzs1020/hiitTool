@@ -41,7 +41,6 @@ export class PlanService {
     }
   }
 
-  // todo: saved plan is not a function anymore
   // save to db and then add to service.plans
   save(plan?: HiitPlan): Promise<HiitPlan> {
     plan = plan || this.currentPlan;

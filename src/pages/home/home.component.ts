@@ -30,13 +30,9 @@ export class HomePage implements OnInit, DoCheck {
               private nativeAudio: NativeAudio, private backgroundMode: BackgroundMode, private toast: Toast,
               public planService: PlanService
   ) {
-    // todo: change audio name for change to my own audio
-    // todo: only enable backgroud and bright when start exsercise
     plt.ready().then(() => {
-      nativeAudio.preloadComplex('actionStart', 'assets/audio/isnt-it.m4r', 1, 1, 0).then(()=>console.log('action audio done'), (err)=>console.log('action audio err:'+err));
-      nativeAudio.preloadComplex('restStart', 'assets/audio/filling-your-inbox.m4r', 1, 1, 0).then(()=>console.log('rest audio done'), (err)=>console.log('rest audio err:'+err));
-      backgroundMode.enable();
-      brightness.setKeepScreenOn(true);
+      nativeAudio.preloadComplex('actionStart', 'assets/audio/change.m4r', 1, 1, 0).then(()=>console.log('action audio done'), (err)=>console.log('action audio err:'+err));
+      nativeAudio.preloadComplex('restStart', 'assets/audio/complete.m4r', 1, 1, 0).then(()=>console.log('rest audio done'), (err)=>console.log('rest audio err:'+err));
     });
   }
 
@@ -66,9 +62,14 @@ export class HomePage implements OnInit, DoCheck {
     if (this.started) {
       // start a timer
       this.timing();
+      // only enable background and bright when start exercise
+      this.backgroundMode.enable();
+      this.brightness.setKeepScreenOn(true);
     } else {
       // pause a timer
       clearInterval(this.simpleInterval);
+      this.backgroundMode.disable();
+      this.brightness.setKeepScreenOn(false);
     }
   }
 
@@ -87,6 +88,8 @@ export class HomePage implements OnInit, DoCheck {
     this.notifying = '#ffffff';
     this.nextNotification = '';
     this.currentStatus = true;
+    this.backgroundMode.disable();
+    this.brightness.setKeepScreenOn(false);
   }
 
   ender(): void {
