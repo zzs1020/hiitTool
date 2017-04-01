@@ -27,6 +27,7 @@ export class PresetPage implements OnInit {
     this.rotateDegree = 0;
   }
 
+  //todo: after click update, window opens but also auto focused on the clicked part
   togglePlanEditor(plan?: HiitPlan): void {
     if (plan) {
       if (!this.editMode) {
