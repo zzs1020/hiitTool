@@ -14,8 +14,5 @@ export class TabsPage {
   tab2Root: any = AboutPage;
   tab3Root: any = PresetPage;
 
-  // todo: should enable rotate
-  constructor() {
-
-  }
+  constructor() {}
 }

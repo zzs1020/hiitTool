@@ -19,6 +19,7 @@ import { DatePipe } from '@angular/common';
 import { IonicStorageModule } from '@ionic/storage';
 import { PlanFilterImpurePipe } from './pipes/plan-filter.pipe';
 import { SecondTransPipe } from './pipes/second-trans.pipe';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { SecondTransPipe } from './pipes/second-trans.pipe';
     Brightness,
     PlanService,
     DatePipe,
-    Keyboard
+    Keyboard,
+    ScreenOrientation
   ]
 })
 export class AppModule {}
