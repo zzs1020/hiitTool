@@ -2,7 +2,8 @@
   <ion-row justify-content-center *ngIf="presetMode">
     <ion-col>
       <ion-item>
-        <ion-input type="text" placeholder="Plan's Name" [(ngModel)]="planService.currentPlan.name"></ion-input>
+        <ion-label color="primary" floating>Plan's Name</ion-label>
+        <ion-input type="text" [(ngModel)]="planService.currentPlan.name"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
@@ -10,14 +11,14 @@
   <ion-row justify-content-center>
     <ion-col>
       <ion-item>
-        <!--<ion-label color="primary" floating>Sets of HIIT</ion-label>-->
-        <ion-input [disabled]="started" type="number" placeholder="Sets of HIIT" [(ngModel)]="planService.currentPlan.sets"></ion-input>
+        <ion-label color="primary" floating>Sets of HIIT</ion-label>
+        <ion-input [disabled]="started" type="number" [(ngModel)]="planService.currentPlan.sets"></ion-input>
       </ion-item>
     </ion-col>
     <ion-col>
       <ion-item>
-        <!--<ion-label color="primary" floating>Break Time</ion-label>-->
-        <ion-input [disabled]="started" type="number" placeholder="Break Time" [(ngModel)]="planService.currentPlan.restTime"></ion-input>
+        <ion-label color="primary" floating>Break Time</ion-label>
+        <ion-input [disabled]="started" type="number" [(ngModel)]="planService.currentPlan.restTime"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
@@ -25,14 +26,14 @@
   <ion-row justify-content-center>
     <ion-col>
       <ion-item>
-        <!--<ion-label color="primary" floating>Action's Duration</ion-label>-->
-        <ion-input [disabled]="started" type="number" placeholder="Action's Duration" clearInput [(ngModel)]="planService.currentPlan.actionTime"></ion-input>
+        <ion-label color="primary" floating>Action's Duration</ion-label>
+        <ion-input [disabled]="started" type="number" clearInput [(ngModel)]="planService.currentPlan.actionTime"></ion-input>
       </ion-item>
     </ion-col>
     <ion-col>
       <ion-item>
-        <!--<ion-label color="primary" floating>Total Actions</ion-label>-->
-        <ion-input [disabled]="started" type="number" placeholder="Total Actions" [(ngModel)]="planService.currentPlan.actions"></ion-input>
+        <ion-label color="primary" floating>Total Actions</ion-label>
+        <ion-input [disabled]="started" type="number" [(ngModel)]="planService.currentPlan.actions"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>

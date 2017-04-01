@@ -29,6 +29,10 @@ export class PresetPage implements OnInit {
 
   //todo: after click update, window opens but also auto focused on the clicked part
   togglePlanEditor(plan?: HiitPlan): void {
+    // if try to update a plan
+    // if try to add a new plan, just give a empty object
+    // if try to close 'input-group' empty current plan
+    this.planService.createCurrentPlan(plan);
     if (plan) {
       if (!this.editMode) {
         this.editMode = true;
@@ -39,10 +43,6 @@ export class PresetPage implements OnInit {
       this.editMode = !this.editMode;
       this.rotateAnimation();
     }
-    // if try to update a plan
-    // if try to add a new plan, just give a empty object
-    // if try to close 'input-group' empty current plan
-    this.planService.createCurrentPlan(plan);
   }
 
   rotateAnimation(): void {
@@ -90,7 +90,7 @@ export class PresetPage implements OnInit {
 
   // navigate to home and load plan
   loadPlan(plan) {
-    this.navCtrl.parent.select(0);
     this.planService.currentPlan = plan;
+    this.navCtrl.parent.select(0);
   }
 }

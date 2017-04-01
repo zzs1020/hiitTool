@@ -29,10 +29,10 @@
   <ion-list>
     <ion-list-header>Saved Plans</ion-list-header>
     <ion-item-sliding *ngFor="let plan of (planService.plans | appPlanFilter:searchString)">
-      <ion-item (click)="loadPlan(plan)">
-        <p>name: {{plan.name}}</p>
-        <p>sets: {{plan.sets}}, rest time: {{plan.restTime}}, action time: {{plan.actionTime}}, actions: {{plan.actions}}</p>
-      </ion-item>
+      <button ion-item (click)="loadPlan(plan)">
+        <strong class="title">name: {{plan.name}}</strong>
+        <span>sets: {{plan.sets}}, rest time: {{plan.restTime}}, action time: {{plan.actionTime}}, actions: {{plan.actions}}</span>
+      </button>
       <ion-item-options>
         <button ion-button color="secondary" (click)="showDetails(plan)">
           <ion-icon name="clipboard"></ion-icon>Details
