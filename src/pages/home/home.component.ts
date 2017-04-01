@@ -31,6 +31,7 @@ export class HomePage implements OnInit, DoCheck {
               public planService: PlanService
   ) {
     // todo: change audio name for change to my own audio
+    // todo: only enable backgroud and bright when start exsercise
     plt.ready().then(() => {
       nativeAudio.preloadComplex('actionStart', 'assets/audio/isnt-it.m4r', 1, 1, 0).then(()=>console.log('action audio done'), (err)=>console.log('action audio err:'+err));
       nativeAudio.preloadComplex('restStart', 'assets/audio/filling-your-inbox.m4r', 1, 1, 0).then(()=>console.log('rest audio done'), (err)=>console.log('rest audio err:'+err));

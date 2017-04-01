@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HiitPlan } from '../entities/hiit-plan.entity';
-import { IHiitPlan } from '../entities/hiit-plan.interface';
 import { Storage } from '@ionic/storage';
 
 @Injectable()
@@ -15,21 +14,17 @@ export class PlanService {
       // this.createPlanAndSave({id: 'defaultId1', name: 'Default Plan1', sets: 5, restTime: 90, actionTime: 30, actions: 2});
       // this.createPlanAndSave({id: 'defaultId2', name: 'Default Plan2', sets: 8, restTime: 90, actionTime: 30, actions: 2});
 
-      // get all plans
-      this.plans = [];
-      storage.forEach((plan) => {
-        this.plans.push(plan);
-      });
+      this.getAllFromDB();
     });
 
   }
 
   // just used for making my default plans
-  private createPlanAndSave(presetPlan?: IHiitPlan): Promise<HiitPlan> {
-    const plan = new HiitPlan(presetPlan);
-    plan.updatedOn = new Date();
-    return this.save(plan);
-  }
+  // private createPlanAndSave(presetPlan?: IHiitPlan): Promise<HiitPlan> {
+  //   const plan = new HiitPlan(presetPlan);
+  //   plan.updatedOn = new Date();
+  //   return this.save(plan);
+  // }
 
   // add/update to local this.plans
   saveToLocal(plan: HiitPlan): void {
@@ -46,23 +41,47 @@ export class PlanService {
     }
   }
 
+  // todo: saved plan is not a function anymore
   // save to db and then add to service.plans
-  save(plan?: HiitPlan): Promise<any> {
+  save(plan?: HiitPlan): Promise<HiitPlan> {
     plan = plan || this.currentPlan;
     plan.updatedOn = new Date();
     plan.name = plan.name || 'Unnamed Plan';
-    return this.storage.set(plan.id, plan).then((savedPlan) => {
-      this.saveToLocal(savedPlan);
+
+    // only save useful properties to storage
+    return this.storage.set(plan.id, plan.getRawPlan()).then((savedRawPlan) => {
+      // but in memory we still need plan's method
+      this.saveToLocal(new HiitPlan(savedRawPlan));
     });
   }
 
-  createCurrentPlan(): HiitPlan {
-    this.currentPlan = new HiitPlan();
-    return this.currentPlan;
+  remove(id: string): Promise<HiitPlan> {
+    return this.storage.remove(id).then(() => {
+      this.plans.splice(this.findPlanIndex(id), 1);
+    });
   }
 
-  copyToCurrentPlan(plan: HiitPlan): HiitPlan {
-    this.currentPlan.setWholePlan(plan);
+  removeAll(): Promise<HiitPlan> {
+    return this.storage.clear().then(() => {
+      this.plans = [];
+    });
+  }
+
+  getAllFromDB(): void {
+    // get all plans
+    this.plans = [];
+    this.storage.forEach((plan) => {
+      // recover to HiitPlan Object, because it's function can't be recovered if also stored functions
+      this.plans.push(new HiitPlan(plan));
+    });
+  }
+
+  // create a empty plan to give current plan or assign a plan to current plan
+  createCurrentPlan(plan?: HiitPlan): HiitPlan {
+    this.currentPlan = new HiitPlan();
+    if (plan) {
+      this.currentPlan.setRawPlan(plan);
+    }
     return this.currentPlan;
   }
 
