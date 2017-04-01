@@ -1,10 +1,9 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 
-import { NavController, Platform } from 'ionic-angular';
+import { NavController, Platform, ToastController } from 'ionic-angular';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { Brightness } from '@ionic-native/brightness';
-import { Toast } from '@ionic-native/toast';
 import { PlanService } from '../../app/services/plan.service';
 
 @Component({
@@ -22,12 +21,10 @@ export class HomePage implements OnInit, DoCheck {
   consumedSecondsInRest: number; // used to compare seconds in plan
   consumedTotalSeconds: number; // used to know when to end
   plannedTotalSeconds: number;
-  notifying: string;
   currentStatus: boolean; // true for in exercise, false for in rest
-  nextNotification: string;
 
   constructor(public navCtrl: NavController, private plt: Platform, private brightness: Brightness,
-              private nativeAudio: NativeAudio, private backgroundMode: BackgroundMode, private toast: Toast,
+              private nativeAudio: NativeAudio, private backgroundMode: BackgroundMode, private toastCtrl: ToastController,
               public planService: PlanService
   ) {
     plt.ready().then(() => {
@@ -85,8 +82,6 @@ export class HomePage implements OnInit, DoCheck {
     this.consumedTotalSeconds = 0;
     this.consumedSecondsInRest = 0;
     this.completedActions = 0;
-    this.notifying = '#ffffff';
-    this.nextNotification = '';
     this.currentStatus = true;
     this.backgroundMode.disable();
     this.brightness.setKeepScreenOn(false);
@@ -144,15 +139,25 @@ export class HomePage implements OnInit, DoCheck {
   }
 
   notifyUser(): void {
-    // play different audio
+    // toast notification then audio
     if (this.currentStatus) {
-      this.notifying = '#ffad36';
-      this.nextNotification = 'Start Action ' + (this.completedActions + 1);
-      // this.toast.show("I'm a toast", '5000', 'bottom');
+      this.toastCtrl.create({
+        message: 'Start Action ' + (this.completedActions + 1),
+        duration: 2000,
+        position: 'bottom',
+        showCloseButton: true,
+        closeButtonText: 'OK'
+      }).present();
       this.nativeAudio.play('actionStart').then(()=>console.log('action audio played'), (err)=>console.log('action audio not played:'+err));
     } else {
-      this.notifying = '#3fe7ff';
-      this.nextNotification = 'Take a ' + this.planService.currentPlan.restTime + 's Break';
+      // toast notification then audio
+      this.toastCtrl.create({
+        message: 'Take a ' + this.planService.currentPlan.restTime + 's Break',
+        duration: 2000,
+        position: 'bottom',
+        showCloseButton: true,
+        closeButtonText: 'OK'
+      }).present();
       this.nativeAudio.play('restStart').then(()=>console.log('rest audio played'), (err)=>console.log('rest audio not played:'+err));
     }
   }
