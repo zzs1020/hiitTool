@@ -51,5 +51,5 @@ install ionic and cordova to your local: http://ionicframework.com/docs/intro/in
 please follow this instruction to install to ios:  http://ionicframework.com/docs/intro/deploying/
 
 ### Change Logs
-4/3/2107 - v1.0.1: added DB, Observable
+4/3/2107 - v1.0.1: added DB, Observable    
 3/25/2107 - v1.0.0: first stable version w/o DB
