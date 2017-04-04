@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HiitPlan } from '../entities/hiit-plan.entity';
+import { IHiitPlan } from '../entities/hiit-plan.interface';
 import { Storage } from '@ionic/storage';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/merge'; // this import instance method, while rxjs/add/observable/merge import static method
+import 'rxjs/add/operator/finally';
 
 @Injectable()
 export class PlanService {
@@ -10,21 +15,22 @@ export class PlanService {
   constructor(private storage: Storage) {
     storage.ready().then(() => {
 
-      // todo: there's no easy way to know if both 2 following finished before get all plans because it's promise, should introduce observable
-      // this.createPlanAndSave({id: 'defaultId1', name: 'Default Plan1', sets: 5, restTime: 90, actionTime: 30, actions: 2});
-      // this.createPlanAndSave({id: 'defaultId2', name: 'Default Plan2', sets: 8, restTime: 90, actionTime: 30, actions: 2});
-
-      this.getAllFromDB();
+      // 2 observable save together, and when all done show db
+      this.createPlanAndSave({id: 'defaultId1', name: 'Default Plan1', sets: 5, restTime: 90, actionTime: 30, actions: 2})
+        .merge(this.createPlanAndSave({id: 'defaultId2', name: 'Default Plan2', sets: 8, restTime: 90, actionTime: 30, actions: 2}))
+        .finally(() => {
+          // get all plans
+          this.getAllFromDB();
+        });
     });
-
   }
 
   // just used for making my default plans
-  // private createPlanAndSave(presetPlan?: IHiitPlan): Promise<HiitPlan> {
-  //   const plan = new HiitPlan(presetPlan);
-  //   plan.updatedOn = new Date();
-  //   return this.save(plan);
-  // }
+  private createPlanAndSave(presetPlan?: IHiitPlan): Observable<HiitPlan> {
+    const plan = new HiitPlan(presetPlan);
+    plan.updatedOn = new Date();
+    return Observable.fromPromise(this.save(plan));
+  }
 
   // add/update to local this.plans
   saveToLocal(plan: HiitPlan): void {
