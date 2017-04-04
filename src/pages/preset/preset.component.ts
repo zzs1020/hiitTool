@@ -93,4 +93,13 @@ export class PresetPage implements OnInit {
     this.planService.currentPlan = plan;
     this.navCtrl.parent.select(0);
   }
+
+  onSearchBarInput(event) {
+    let val = event.target.value;
+    if (val && val.trim() !== '') {
+      this.searchString = val;
+    } else {
+      this.searchString = '';
+    }
+  }
 }

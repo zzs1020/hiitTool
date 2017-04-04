@@ -11,7 +11,7 @@
     <ion-grid>
       <ion-row>
         <ion-col col-10>
-          <ion-searchbar [(ngModel)]="searchString" [animated]="true"
+          <ion-searchbar [animated]="true" (ionInput)="onSearchBarInput($event)" debounce="400"
                          [showCancelButton]="true" placeholder="Search plan by name...">
           </ion-searchbar>
         </ion-col>
