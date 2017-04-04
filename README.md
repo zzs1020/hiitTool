@@ -9,12 +9,12 @@ A simple timer for HIIT exerciser.
 
 ## In-App Details
 ### Screenshot
-![alt page](./readme/1.png)
-![alt page](./readme/2.png)
-![alt page](./readme/3.png)
-![alt page](./readme/4.png)
-![alt page](./readme/5.png)
-![alt page](./readme/6.png)
+<img src='./readme/1.png' width='200px'>
+<img src='./readme/2.png' width='200px'>
+<img src='./readme/3.png' width='200px'>
+<img src='./readme/4.png' width='200px'>
+<img src='./readme/5.png' width='200px'>
+<img src='./readme/6.png' width='200px'>
 
 ### Instructions
 There are already 2 default plans existing in the app. You can add more plans to it at the 'Preset Page'.
