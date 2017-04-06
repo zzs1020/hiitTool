@@ -15,13 +15,21 @@ export class PlanService {
   constructor(private storage: Storage) {
     storage.ready().then(() => {
 
-      // 2 observable save together, and when all done show db
-      this.createPlanAndSave({id: 'defaultId1', name: 'Default Plan1', sets: 5, restTime: 90, actionTime: 30, actions: 2})
-        .merge(this.createPlanAndSave({id: 'defaultId2', name: 'Default Plan2', sets: 8, restTime: 90, actionTime: 30, actions: 2}))
-        .finally(() => {
-          // get all plans
+      storage.get('default-set-flag').then((set) => {
+        if (!set) {
+          // 2 observable save together, and when all done show db
+          this.createPlanAndSave({id: 'defaultId1', name: 'Default Plan1', sets: 5, restTime: 90, actionTime: 30, actions: 2})
+            .merge(this.createPlanAndSave({id: 'defaultId2', name: 'Default Plan2', sets: 8, restTime: 90, actionTime: 30, actions: 2}))
+            .finally(() => {
+              // get all plans
+              this.getAllFromDB();
+              storage.set('default-set-flag', true);
+            }).subscribe();
+        } else {
           this.getAllFromDB();
-        });
+        }
+      });
+
     });
   }
 
@@ -74,15 +82,18 @@ export class PlanService {
     return this.storage.clear().then(() => {
       this.plans = [];
       this.createCurrentPlan();
+      this.storage.set('default-set-flag', true);
     });
   }
 
   getAllFromDB(): void {
     // get all plans
     this.plans = [];
-    this.storage.forEach((plan) => {
-      // recover to HiitPlan Object, because it's function can't be recovered if also stored functions
-      this.plans.push(new HiitPlan(plan));
+    this.storage.forEach((plan, key) => {
+      if (key !== 'default-set-flag') {
+        // recover to HiitPlan Object, because it's function can't be recovered if also stored functions
+        this.plans.unshift(new HiitPlan(plan));
+      }
     });
   }
 
